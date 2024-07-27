@@ -37,7 +37,6 @@ model Category {
 model Product {
   id                 String     @id @default(uuid())
   name               String
-  price              Decimal
   description        String
   imageUrl           String
   basePrice          Decimal    @db.Decimal(10, 2)
@@ -46,19 +45,19 @@ model Product {
   category           Category   @relation(fields: [categoryId], references: [id], onDelete: Cascade)
   slug               String
   storeId            String
-  store              Store      @relation(fields: [storeId], references: [id],onDelete: Cascade)
+  store              Store      @relation(fields: [storeId], references: [id], onDelete: Cascade)
   deliveries         Delivery[]
 }
 
 model Delivery {
   id         String   @id @default(uuid())
   storeId    String
-  store      Store    @relation(fields: [storeId], references: [id],onDelete: Cascade)
+  store      Store    @relation(fields: [storeId], references: [id], onDelete: Cascade)
   productId  String
-  product    Product  @relation(fields: [productId], references: [id],onDelete: Cascade)
+  product    Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
   userId     String
-  user       User     @relation(fields: [userId], references: [id],onDelete: Cascade)
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   categoryId String
-  category   Category @relation(fields: [categoryId], references: [id],onDelete: Cascade)
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
   date       DateTime
 }
