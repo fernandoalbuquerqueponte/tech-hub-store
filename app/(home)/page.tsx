@@ -5,6 +5,11 @@ import ProductList from "../_components/product-list";
 import Search from "../_components/search";
 
 export default async function Home() {
+  const featuredProducts = await db.product.findMany({
+    where: {
+      featuredProduct: true,
+    },
+  });
   const mouseCategory = await db.product.findMany({
     where: {
       category: {
@@ -42,6 +47,10 @@ export default async function Home() {
         <p className="font-sm capitalize">Quinta, 28 de Julho.</p>
       </div>
 
+      <div className="flex flex-col max-w-full px-6 py-6">
+        <SectionListTitle title="Em Destaque" />
+        <ProductList products={featuredProducts} />
+      </div>
       <div className="flex flex-col max-w-full px-6 py-6">
         <SectionListTitle title="Mouses" />
         <ProductList products={mouseCategory} />
