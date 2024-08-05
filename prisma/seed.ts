@@ -51,6 +51,7 @@ const main = async () => {
       categoryId: mouseCategory.id,
       storeId: store.id,
       slug: "mouse-gamer-logitech-g-pro",
+      featuredProduct: true,
     },
     {
       name: "Mouse Gamer Logitech G203 LIGHTSYNC RGB, Efeito de Ondas de Cores, 6 Botões Programáveis e Até 8.000 DPI, Preto",
@@ -101,6 +102,7 @@ const main = async () => {
       categoryId: keyboardCategory.id,
       storeId: store.id,
       slug: "teclado-mecanico-hyperx-alloy-elite-rgb",
+      featuredProduct: true,
     },
     {
       name: "Logitech G PRO",
@@ -113,6 +115,7 @@ const main = async () => {
       categoryId: keyboardCategory.id,
       storeId: store.id,
       slug: "teclado-gamer-logitech-g-pro",
+      featuredProduct: true,
     },
     {
       name: "Teclado Mecânico COUGAR ULTIMUS RGB",
@@ -125,6 +128,7 @@ const main = async () => {
       categoryId: keyboardCategory.id,
       storeId: store.id,
       slug: "teclado-mecanico-cougar-ultimus-rgb",
+      featuredProduct: true,
     },
 
     // Processors
@@ -139,6 +143,7 @@ const main = async () => {
       categoryId: processorCategory.id,
       storeId: store.id,
       slug: "processador-intel-i5-8600k",
+      featuredProduct: true,
     },
     {
       name: "Intel Core i7-7700K Desktop Processor 4 Cores up to 4.5 GHz Unlocked LGA 1151 100200 Series 91W",
@@ -151,6 +156,7 @@ const main = async () => {
       categoryId: processorCategory.id,
       storeId: store.id,
       slug: "processador-intel-core-i7-7700k",
+      featuredProduct: true,
     },
     {
       name: "Processador AMD Ryzen 5 2600 3.4GHz (3.9GHz Turbo), 6-Cores 12-Threads, Cooler Wraith Stealth, AM4, YD2600BBAFBOX, S Video",
@@ -163,6 +169,7 @@ const main = async () => {
       categoryId: processorCategory.id,
       storeId: store.id,
       slug: "processador-amd-ryzen-5-2600",
+      featuredProduct: true,
     },
     {
       name: "Processador Intel Core I3 6100",
@@ -175,6 +182,7 @@ const main = async () => {
       categoryId: processorCategory.id,
       storeId: store.id,
       slug: "processador-intel-core-i3-6100",
+      featuredProduct: true,
     },
   ];
 

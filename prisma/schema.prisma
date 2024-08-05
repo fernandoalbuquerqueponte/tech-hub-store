@@ -20,10 +20,11 @@ model User {
 }
 
 model Store {
-  id         String     @id @default(uuid())
-  name       String
-  products   Product[]
-  deliveries Delivery[]
+  id            String     @id @default(uuid())
+  name          String
+  featuredStore Boolean    @default(false)
+  products      Product[]
+  deliveries    Delivery[]
 }
 
 model Category {
@@ -47,6 +48,7 @@ model Product {
   storeId            String
   store              Store      @relation(fields: [storeId], references: [id], onDelete: Cascade)
   deliveries         Delivery[]
+  featuredProduct    Boolean    @default(false)
 }
 
 model Delivery {
