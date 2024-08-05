@@ -3,6 +3,10 @@ import { db } from "@/app/_lib/prisma";
 import SectionListTitle from "../_components/section-list";
 import ProductList from "../_components/product-list";
 import Search from "../_components/search";
+import Banner from "./_components/banner";
+
+import banner1 from "../../public/banner1.png";
+import banner2 from "../../public/banner2.png";
 
 export default async function Home() {
   const featuredProducts = await db.product.findMany({
@@ -45,6 +49,11 @@ export default async function Home() {
           Olá, <span className="font-bold">Fernando Albuquerque!</span>
         </h2>
         <p className="font-sm capitalize">Quinta, 28 de Julho.</p>
+      </div>
+
+      <div className="flex px-5 py-6 flex-row gap-3 overflow-hidden overflow-x-auto [&::-webkit-scrollbar]:hidden">
+        <Banner image={banner1} />
+        <Banner image={banner2} />
       </div>
 
       <div className="flex flex-col max-w-full px-6 py-6">
