@@ -44,7 +44,7 @@ model Product {
   discountPercentage Int        @default(0)
   categoryId         String
   category           Category   @relation(fields: [categoryId], references: [id], onDelete: Cascade)
-  slug               String
+  slug               String     @unique
   storeId            String
   store              Store      @relation(fields: [storeId], references: [id], onDelete: Cascade)
   deliveries         Delivery[]
