@@ -1,3 +1,4 @@
+"use client";
 import {
   LogOutIcon,
   MenuIcon,
@@ -18,8 +19,10 @@ import {
 } from "../_components/ui/sheet";
 
 import { Avatar, AvatarFallback, AvatarImage } from "../_components/ui/avatar";
+import { signIn, useSession } from "next-auth/react";
 
 export default function Header() {
+  const { data: session } = useSession();
   return (
     <header>
       <Card>
@@ -47,14 +50,19 @@ export default function Header() {
                 <div className="flex items-center justify-between px-6 py-4">
                   <div className="flex items-center gap-3">
                     <Avatar>
-                      <AvatarImage src="https://firebasestorage.googleapis.com/v0/b/finances-dashboard-2e51c.appspot.com/o/images%2FNxDpa3215whAbAwhmLosT5SWXI52%2FFB_IMG_1697937897105.jpg?alt=media&token=beb938c8-dc69-417b-a487-3792d323a72b" />
+                      <AvatarImage src={session?.user?.image as string} />
                       <AvatarFallback>AM</AvatarFallback>
                     </Avatar>
                     <h3 className="font-medium text-sm">
-                      Abreu Motta Rei Delas
+                      {session?.user?.name}
                     </h3>
                   </div>
-                  <Button variant="outline" size="icon" className="w-9 h-9">
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    className="w-9 h-9"
+                    onClick={() => signIn("google")}
+                  >
                     <LogOutIcon size={16} />
                   </Button>
                 </div>
