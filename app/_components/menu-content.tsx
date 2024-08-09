@@ -28,7 +28,7 @@ export default function MenuContent() {
   return (
     <div>
       <SheetHeader>
-        <SheetTitle className="text-left px-5 py-6 text-2xsl">Menu</SheetTitle>
+        <SheetTitle className="text-left px-5 py-6 text-2xl">Menu</SheetTitle>
       </SheetHeader>
       <div className="flex items-center justify-between px-6 py-4">
         <div className="flex items-center gap-3">
