@@ -1,4 +1,5 @@
-import { Product, Store } from "@prisma/client";
+"use client";
+import { Category, Product, Store } from "@prisma/client";
 import Image from "next/image";
 
 import {
@@ -12,18 +13,33 @@ import SectionListTitle from "@/app/_components/section-list";
 import ProductList from "@/app/_components/product-list";
 import { Button } from "@/app/_components/ui/button";
 import { Badge } from "@/app/_components/ui/badge";
+import { saveProduct } from "../_actions/save-product";
+import { useSession } from "next-auth/react";
 
 interface ProductDetailsProps {
   featuredProducts: Product[];
   product: Product;
   store: Store;
+  category: Category;
 }
 
 export default function ProductDetails({
   product,
   store,
+  category,
   featuredProducts,
 }: ProductDetailsProps) {
+  const { data } = useSession();
+  async function handleAddProduct() {
+    await saveProduct({
+      productId: product.id,
+      storeId: store.id,
+      categoryId: category.id,
+      date: new Date(),
+      userId: (data?.user as any).id,
+    });
+  }
+
   return (
     <div>
       <div className="w-full bg-neutral-900 h-[300px] flex items-center justify-center relative mb-5">
@@ -65,14 +81,16 @@ export default function ProductDetails({
         </div>
         <div className="flex flex-row gap-4 items-center py-2">
           <h2 className="text-2xl font-bold">R$ 450,00</h2>
-          <span className="text-[#c4c4c4] line-through">{`R$ ${product.basePrice.toFixed(
-            2
-          )}`}</span>
+          <span className="text-[#c4c4c4] line-through">111</span>
         </div>
 
         <span className="text-[#A1A1AA]">Em 12x s/juros de R$ 35,00</span>
 
-        <Button className="w-full my-4" variant="default">
+        <Button
+          className="w-full my-4"
+          variant="default"
+          onClick={handleAddProduct}
+        >
           <ShoppingCartIcon size={20} className="mr-2" />
           Comprar Agora
         </Button>

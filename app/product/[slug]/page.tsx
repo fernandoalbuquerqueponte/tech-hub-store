@@ -38,6 +38,7 @@ export default async function ProductDetailsPage({
         featuredProducts={featuredProducts}
         product={product}
         store={product.store}
+        category={product.category}
       />
     </div>
   );
