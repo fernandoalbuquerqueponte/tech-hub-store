@@ -7,6 +7,11 @@ import Banner from "./_components/banner";
 
 import banner1 from "../../public/banner1.png";
 import banner2 from "../../public/banner2.png";
+import { useSession } from "next-auth/react";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../_lib/auth";
+import { format } from "date-fns/format";
+import { ptBR } from "date-fns/locale/pt-BR";
 
 export default async function Home() {
   const featuredProducts = await db.product.findMany({
@@ -38,6 +43,8 @@ export default async function Home() {
       },
     },
   });
+
+  const session = await getServerSession(authOptions);
   return (
     <div>
       <div className="w-full mb-6 px-5 py-6">
@@ -45,10 +52,17 @@ export default async function Home() {
       </div>
 
       <div className="flex flex-col items-center justify-center">
-        <h2 className="font-xl">
-          Olá, <span className="font-bold">Fernando Albuquerque!</span>
+        <h2 className="text-xl">
+          Olá,{" "}
+          <span className="font-bold">
+            {session?.user ? session.user?.name : "Faça seu login!"}
+          </span>
         </h2>
-        <p className="font-sm capitalize">Quinta, 28 de Julho.</p>
+        <p className="font-sm capitalize">
+          {format(new Date(), "EEE, dd 'de' MMMM", {
+            locale: ptBR,
+          })}
+        </p>
       </div>
 
       <div className="flex px-5 py-6 flex-row gap-3 overflow-hidden overflow-x-auto [&::-webkit-scrollbar]:hidden">
