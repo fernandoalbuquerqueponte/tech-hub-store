@@ -8,6 +8,7 @@ import { Button } from "./ui/button";
 import Link from "next/link";
 
 import MenuContent from "./menu-content";
+import CartMenuContent from "./cart-menu";
 
 export default function Header() {
   return (
@@ -17,11 +18,18 @@ export default function Header() {
           <Link className="text-lg font-bold" href="/">
             TechHub
           </Link>
-          <div className="flex flex-row gap-5">
-            <Button className="w-8 h-8" variant="outline" size="icon">
-              <ShoppingCartIcon size={16} />
-            </Button>
 
+          <div className="flex flex-row gap-5">
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button className="w-8 h-8" variant="outline" size="icon">
+                  <ShoppingCartIcon size={16} />
+                </Button>
+              </SheetTrigger>
+              <SheetContent className="p-0">
+                <CartMenuContent />
+              </SheetContent>
+            </Sheet>
             <Sheet>
               <SheetTrigger asChild>
                 <Button className="w-8 h-8" variant="outline" size="icon">
