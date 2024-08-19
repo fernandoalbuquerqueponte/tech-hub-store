@@ -1,6 +1,8 @@
 "use client";
-import { Category, Product, Store } from "@prisma/client";
+import { useContext } from "react";
 import Image from "next/image";
+import { CartContext } from "@/app/_providers/cart-provider";
+import { Category, Product, Store } from "@prisma/client";
 
 import {
   ChevronLeftIcon,
@@ -13,8 +15,6 @@ import SectionListTitle from "@/app/_components/section-list";
 import ProductList from "@/app/_components/product-list";
 import { Button } from "@/app/_components/ui/button";
 import { Badge } from "@/app/_components/ui/badge";
-import { saveProduct } from "../_actions/save-product";
-import { useSession } from "next-auth/react";
 
 interface ProductDetailsProps {
   featuredProducts: Product[];
@@ -29,17 +29,10 @@ export default function ProductDetails({
   category,
   featuredProducts,
 }: ProductDetailsProps) {
-  const { data } = useSession();
-  async function handleAddProduct() {
-    await saveProduct({
-      productId: product.id,
-      storeId: store.id,
-      categoryId: category.id,
-      date: new Date(),
-      userId: (data?.user as any).id,
-    });
+  const { addProduct } = useContext(CartContext);
+  async function handleAddProduct(product: Product) {
+    addProduct(product);
   }
-
   return (
     <div>
       <div className="w-full bg-neutral-900 h-[300px] flex items-center justify-center relative mb-5">
@@ -89,7 +82,7 @@ export default function ProductDetails({
         <Button
           className="w-full my-4"
           variant="default"
-          onClick={handleAddProduct}
+          onClick={() => handleAddProduct(product)}
         >
           <ShoppingCartIcon size={20} className="mr-2" />
           Comprar Agora

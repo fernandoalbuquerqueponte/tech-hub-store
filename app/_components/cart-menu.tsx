@@ -1,3 +1,4 @@
+import CartItem from "./cart-item";
 import { SheetHeader, SheetTitle } from "./ui/sheet";
 
 export default function CartMenuContent() {
@@ -8,7 +9,9 @@ export default function CartMenuContent() {
           Carrinho
         </SheetTitle>
       </SheetHeader>
-      <div className="py-6 px-5"></div>
+      <div className="py-6 px-5 w-full">
+        <CartItem />
+      </div>
     </div>
   );
 }
