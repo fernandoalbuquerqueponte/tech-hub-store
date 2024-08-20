@@ -3,9 +3,14 @@ import { Button } from "./ui/button";
 import { ChevronLeftIcon, ChevronRightIcon, Trash2Icon } from "lucide-react";
 import { useContext } from "react";
 import { CartContext } from "../_providers/cart-provider";
+import { Product } from "@prisma/client";
 
 export default function CartItem() {
-  const { products } = useContext(CartContext);
+  const { products, incrementProduct } = useContext(CartContext);
+
+  function handleIncrement(product: Product) {
+    incrementProduct(product);
+  }
   return (
     <div className="flex flex-col gap-6">
       {products.map((product) => (
@@ -31,7 +36,11 @@ export default function CartItem() {
 
                 <span className="text-center">{product.quantity}</span>
 
-                <Button variant="outline" size="icon">
+                <Button
+                  variant="outline"
+                  size="icon"
+                  onClick={() => handleIncrement(product)}
+                >
                   <ChevronRightIcon size={20} />
                 </Button>
               </div>

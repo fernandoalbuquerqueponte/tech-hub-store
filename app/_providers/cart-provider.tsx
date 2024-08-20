@@ -1,6 +1,12 @@
 "use client";
 import { Product } from "@prisma/client";
-import { createContext, ReactNode, useEffect, useState } from "react";
+import {
+  createContext,
+  ReactNode,
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
 
 interface CartContextProps extends Product {
   quantity: number;
@@ -12,6 +18,7 @@ export interface CartProviderProps {
   cartBasePrice: number;
   cartTotalDiscount: number;
   addProduct: (product: Product) => void;
+  incrementProduct: (product: Product) => void;
 }
 export const CartContext = createContext<CartProviderProps>({
   products: [],
@@ -19,6 +26,7 @@ export const CartContext = createContext<CartProviderProps>({
   cartBasePrice: 0,
   cartTotalDiscount: 0,
   addProduct: () => {},
+  incrementProduct: () => {},
 });
 
 export default function CartProvider({ children }: { children: ReactNode }) {
@@ -45,8 +53,18 @@ export default function CartProvider({ children }: { children: ReactNode }) {
         return newProducts;
       }
     });
-    console.log({ products });
   }
+
+  const incrementProduct = useCallback((product: Product) => {
+    setProducts((prevItem) => {
+      const newProduct = prevItem.map((p) => {
+        return p.id === product.id ? { ...p, quantity: p.quantity + 1 } : p;
+      });
+      localStorage.setItem("@techhub-store", JSON.stringify(newProduct));
+
+      return newProduct;
+    });
+  }, []);
 
   useEffect(() => {
     const storedData = localStorage.getItem("@techhub-store");
@@ -63,6 +81,7 @@ export default function CartProvider({ children }: { children: ReactNode }) {
         cartBasePrice: 0,
         cartTotalDiscount: 0,
         addProduct,
+        incrementProduct,
       }}
     >
       {children}
