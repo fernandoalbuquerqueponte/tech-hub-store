@@ -6,10 +6,19 @@ import { CartContext } from "../_providers/cart-provider";
 import { Product } from "@prisma/client";
 
 export default function CartItem() {
-  const { products, incrementProduct } = useContext(CartContext);
+  const { products, incrementProduct, decrementProduct, removeProduct } =
+    useContext(CartContext);
 
-  function handleIncrement(product: Product) {
-    incrementProduct(product);
+  function handleIncrement(productId: string) {
+    incrementProduct(productId);
+  }
+
+  function handleDecrement(productId: string) {
+    decrementProduct(productId);
+  }
+
+  function handleRemoveProduct(productId: string) {
+    removeProduct(productId);
   }
   return (
     <div className="flex flex-col gap-6">
@@ -30,7 +39,11 @@ export default function CartItem() {
             <h2>R$ {Number(product.basePrice)}</h2>
             <div className="flex justify-between w-full">
               <div className="flex flex-row gap-3">
-                <Button variant="outline" size="icon">
+                <Button
+                  variant="outline"
+                  size="icon"
+                  onClick={() => handleDecrement(product.id)}
+                >
                   <ChevronLeftIcon size={20} />
                 </Button>
 
@@ -39,12 +52,16 @@ export default function CartItem() {
                 <Button
                   variant="outline"
                   size="icon"
-                  onClick={() => handleIncrement(product)}
+                  onClick={() => handleIncrement(product.id)}
                 >
                   <ChevronRightIcon size={20} />
                 </Button>
               </div>
-              <Button variant="outline" size="icon">
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={() => handleRemoveProduct(product.id)}
+              >
                 <Trash2Icon size={20} />
               </Button>
             </div>

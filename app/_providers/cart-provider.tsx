@@ -1,12 +1,6 @@
 "use client";
 import { Product } from "@prisma/client";
-import {
-  createContext,
-  ReactNode,
-  useCallback,
-  useEffect,
-  useState,
-} from "react";
+import { createContext, ReactNode, useEffect, useState } from "react";
 
 interface CartContextProps extends Product {
   quantity: number;
@@ -18,7 +12,9 @@ export interface CartProviderProps {
   cartBasePrice: number;
   cartTotalDiscount: number;
   addProduct: (product: Product) => void;
-  incrementProduct: (product: Product) => void;
+  incrementProduct: (productId: string) => void;
+  decrementProduct: (productId: string) => void;
+  removeProduct: (productId: string) => void;
 }
 export const CartContext = createContext<CartProviderProps>({
   products: [],
@@ -27,6 +23,8 @@ export const CartContext = createContext<CartProviderProps>({
   cartTotalDiscount: 0,
   addProduct: () => {},
   incrementProduct: () => {},
+  decrementProduct: () => {},
+  removeProduct: () => {},
 });
 
 export default function CartProvider({ children }: { children: ReactNode }) {
@@ -55,16 +53,53 @@ export default function CartProvider({ children }: { children: ReactNode }) {
     });
   }
 
-  const incrementProduct = useCallback((product: Product) => {
-    setProducts((prevItem) => {
-      const newProduct = prevItem.map((p) => {
-        return p.id === product.id ? { ...p, quantity: p.quantity + 1 } : p;
-      });
-      localStorage.setItem("@techhub-store", JSON.stringify(newProduct));
+  function incrementProduct(productId: string) {
+    setProducts((prevItem) =>
+      prevItem.map((p) => {
+        if (p.id === productId) {
+          return {
+            ...p,
+            quantity: p.quantity + 1,
+          };
+        }
+        return p;
+      })
+    );
+  }
 
-      return newProduct;
+  function decrementProduct(productId: string) {
+    setProducts((prevItem) => {
+      const newProductQuantity = prevItem
+        .map((p) => {
+          if (p.id === productId) {
+            const newQuantity = p.quantity - 1;
+            if (newQuantity < 1) {
+              return null;
+            }
+            return {
+              ...p,
+              quantity: newQuantity,
+            };
+          }
+          return p;
+        })
+        .filter((p) => p !== null);
+
+      localStorage.setItem(
+        "@techhub-store",
+        JSON.stringify(newProductQuantity)
+      );
+      return newProductQuantity;
     });
-  }, []);
+  }
+
+  function removeProduct(productId: string) {
+    setProducts((prevItem) => {
+      const newItem = prevItem.filter((p) => p.id !== productId);
+      localStorage.setItem("@techhub-store", JSON.stringify(newItem));
+      return newItem;
+    });
+  }
 
   useEffect(() => {
     const storedData = localStorage.getItem("@techhub-store");
@@ -82,6 +117,8 @@ export default function CartProvider({ children }: { children: ReactNode }) {
         cartTotalDiscount: 0,
         addProduct,
         incrementProduct,
+        decrementProduct,
+        removeProduct,
       }}
     >
       {children}
