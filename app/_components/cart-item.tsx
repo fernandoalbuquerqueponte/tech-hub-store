@@ -1,10 +1,11 @@
-import Image from "next/image";
-import { Button } from "./ui/button";
-import { ChevronLeftIcon, ChevronRightIcon, Trash2Icon } from "lucide-react";
 import { useContext } from "react";
+import { ChevronLeftIcon, ChevronRightIcon, Trash2Icon } from "lucide-react";
 import { CartContext } from "../_providers/cart-provider";
-import { Card, CardContent } from "./ui/card";
 import { getTotalPrice } from "../_helpers/product-price";
+import Image from "next/image";
+
+import { Card, CardContent } from "./ui/card";
+import { Button } from "./ui/button";
 
 export default function CartItem() {
   const {
@@ -55,7 +56,9 @@ export default function CartItem() {
                   <ChevronLeftIcon size={20} />
                 </Button>
 
-                <span className="text-center">{product.quantity}</span>
+                <div className="flex items-center">
+                  <span>{product.quantity}</span>
+                </div>
 
                 <Button
                   variant="outline"
