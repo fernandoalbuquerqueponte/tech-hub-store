@@ -1,6 +1,6 @@
 "use client";
 import { Product } from "@prisma/client";
-import { createContext, ReactNode, useEffect, useState } from "react";
+import { createContext, ReactNode, useEffect, useMemo, useState } from "react";
 
 interface CartContextProps extends Product {
   quantity: number;
@@ -10,7 +10,9 @@ export interface CartProviderProps {
   products: CartContextProps[];
   cartTotalPrice: number;
   cartBasePrice: number;
-  cartTotalDiscount: number;
+  discount: number;
+  subtotal: number;
+  total: number;
   addProduct: (product: Product) => void;
   incrementProduct: (productId: string) => void;
   decrementProduct: (productId: string) => void;
@@ -20,7 +22,9 @@ export const CartContext = createContext<CartProviderProps>({
   products: [],
   cartTotalPrice: 0,
   cartBasePrice: 0,
-  cartTotalDiscount: 0,
+  subtotal: 0,
+  discount: 0,
+  total: 0,
   addProduct: () => {},
   incrementProduct: () => {},
   decrementProduct: () => {},
@@ -29,6 +33,33 @@ export const CartContext = createContext<CartProviderProps>({
 
 export default function CartProvider({ children }: { children: ReactNode }) {
   const [products, setProducts] = useState<CartContextProps[]>([]);
+
+  //subtotal
+  const subtotal = useMemo(() => {
+    return products.reduce((acc, product) => {
+      return acc + Number(product.basePrice) * product.quantity;
+    }, 0);
+  }, [products]);
+
+  const total = useMemo(() => {
+    return products.reduce((acc, product) => {
+      const priceWithDiscount =
+        Number(product.basePrice) * (1 - product.discountPercentage / 100);
+      return acc + priceWithDiscount * product.quantity;
+    }, 0);
+  }, [products]);
+
+  const discount = useMemo(() => {
+    return products.reduce((acc, product) => {
+      return (
+        acc +
+        (Number(product.basePrice) *
+          product.quantity *
+          product.discountPercentage) /
+          100
+      );
+    }, 0);
+  }, [products]);
 
   function addProduct(product: Product) {
     setProducts((prevItem) => {
@@ -114,11 +145,13 @@ export default function CartProvider({ children }: { children: ReactNode }) {
         products,
         cartTotalPrice: 0,
         cartBasePrice: 0,
-        cartTotalDiscount: 0,
+        discount,
         addProduct,
         incrementProduct,
         decrementProduct,
         removeProduct,
+        subtotal,
+        total,
       }}
     >
       {children}
