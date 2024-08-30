@@ -6,6 +6,9 @@ import Image from "next/image";
 
 import { Card, CardContent } from "./ui/card";
 import { Button } from "./ui/button";
+import { saveProduct } from "../_actions/save-product";
+import { useSession } from "next-auth/react";
+import { redirect } from "next/navigation";
 
 export default function CartItem() {
   const {
@@ -18,6 +21,8 @@ export default function CartItem() {
     discount,
   } = useContext(CartContext);
 
+  const { data } = useSession();
+
   function handleIncrement(productId: string) {
     incrementProduct(productId);
   }
@@ -28,6 +33,13 @@ export default function CartItem() {
 
   function handleRemoveProduct(productId: string) {
     removeProduct(productId);
+  }
+
+  async function handleCreateOrder() {
+    if (!data?.user) {
+      return;
+    }
+    await saveProduct(products, (data?.user as any).id);
   }
   return (
     <div className="flex flex-col gap-6">
@@ -100,7 +112,9 @@ export default function CartItem() {
                   <h1 className="font-bold">Total</h1>
                   <h2 className="font-bold">R$ {Number(total).toFixed(2)}</h2>
                 </div>
-                <Button className="w-full">CONFIRMAR COMPRA</Button>
+                <Button onClick={handleCreateOrder} className="w-full">
+                  CONFIRMAR COMPRA
+                </Button>
               </div>
             </CardContent>
           </Card>

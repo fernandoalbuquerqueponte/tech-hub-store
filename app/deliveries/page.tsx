@@ -10,10 +10,7 @@ export default async function Deliveries() {
     return redirect("/");
   }
 
-  const deliveries = await db.delivery.findMany({
-    where: {
-      userId: (session?.user as any).id,
-    },
+  const deliveries = await db.deliveryItem.findMany({
     include: {
       product: true,
     },
@@ -23,6 +20,7 @@ export default async function Deliveries() {
       {deliveries.map((deliverie) => (
         <div key={deliverie.id}>
           <h1>{deliverie.product.name}</h1>
+          <h1>{deliverie.quantity}</h1>
         </div>
       ))}
     </div>

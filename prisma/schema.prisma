@@ -14,98 +14,100 @@ datasource db {
 }
 
 model Account {
-  id                 String  @id @default(cuid())
-  userId             String  @map("user_id")
-  type               String
-  provider           String
-  providerAccountId  String  @map("provider_account_id")
-  refresh_token      String? @db.Text
-  access_token       String? @db.Text
-  expires_at         Int?
-  token_type         String?
-  scope              String?
-  id_token           String? @db.Text
-  session_state      String?
- 
+  id                String  @id @default(cuid())
+  userId            String  @map("user_id")
+  type              String
+  provider          String
+  providerAccountId String  @map("provider_account_id")
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
- 
+
   @@unique([provider, providerAccountId])
   @@map("accounts")
 }
- 
+
 model Session {
   id           String   @id @default(cuid())
   sessionToken String   @unique @map("session_token")
   userId       String   @map("user_id")
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
- 
+
   @@map("sessions")
 }
- 
+
 model User {
-  id            String    @id @default(cuid())
+  id            String     @id @default(cuid())
   name          String?
-  email         String?   @unique
-  emailVerified DateTime? @map("email_verified")
+  email         String?    @unique
+  emailVerified DateTime?  @map("email_verified")
   image         String?
   accounts      Account[]
   sessions      Session[]
-	  deliveries Delivery[]
- 
+  deliveries    Delivery[]
+
   @@map("users")
 }
- 
+
 model VerificationToken {
   identifier String
   token      String
   expires    DateTime
- 
+
   @@unique([identifier, token])
   @@map("verificationtokens")
 }
 
 model Store {
-  id            String     @id @default(uuid())
+  id            String    @id @default(uuid())
   name          String
-  featuredStore Boolean    @default(false)
+  featuredStore Boolean   @default(false)
   products      Product[]
-  deliveries    Delivery[]
 }
 
 model Category {
-  id         String     @id @default(uuid())
-  name       String
-  slug       String
-  products   Product[]
-  deliveries Delivery[]
+  id       String    @id @default(uuid())
+  name     String
+  slug     String
+  products Product[]
 }
 
 model Product {
-  id                 String     @id @default(uuid())
+  id                 String         @id @default(uuid())
   name               String
   description        String
   imageUrl           String
-  basePrice          Decimal    @db.Decimal(10, 2)
-  discountPercentage Int        @default(0)
+  basePrice          Decimal        @db.Decimal(10, 2)
+  discountPercentage Int            @default(0)
   categoryId         String
-  category           Category   @relation(fields: [categoryId], references: [id], onDelete: Cascade)
-  slug               String     @unique
+  category           Category       @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  slug               String         @unique
   storeId            String
-  store              Store      @relation(fields: [storeId], references: [id], onDelete: Cascade)
-  deliveries         Delivery[]
-  featuredProduct    Boolean    @default(false)
+  store              Store          @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  deliveriesItem     DeliveryItem[]
+  featuredProduct    Boolean        @default(false)
 }
 
 model Delivery {
+  id             String         @id @default(uuid())
+  userId         String
+  user           User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  deliveriesItem DeliveryItem[]
+}
+
+model DeliveryItem {
   id         String   @id @default(uuid())
-  storeId    String
-  store      Store    @relation(fields: [storeId], references: [id], onDelete: Cascade)
   productId  String
   product    Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
-  userId     String
-  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  categoryId String
-  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
-  date       DateTime
+  deliveryId String
+  delivery   Delivery @relation(fields: [deliveryId], references: [id], onDelete: Cascade)
+  quantity   Int
+  basePrice  Decimal  @db.Decimal(8, 2)
 }
