@@ -100,6 +100,12 @@ model Delivery {
   userId         String
   user           User           @relation(fields: [userId], references: [id], onDelete: Cascade)
   deliveriesItem DeliveryItem[]
+  orderStatus    OrderStatus    @default(DELIVERY_IN_PROGRESS)
+}
+
+enum OrderStatus {
+  ORDER_RECEIVED
+  DELIVERY_IN_PROGRESS
 }
 
 model DeliveryItem {

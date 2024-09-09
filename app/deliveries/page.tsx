@@ -2,6 +2,7 @@ import { db } from "../_lib/prisma";
 import { redirect } from "next/navigation";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../_lib/auth";
+import DeliveryItem from "./_components/order-product";
 
 export default async function Deliveries() {
   const session = await getServerSession(authOptions);
@@ -10,19 +11,59 @@ export default async function Deliveries() {
     return redirect("/");
   }
 
-  const deliveries = await db.deliveryItem.findMany({
+  const receivedProducts = await db.deliveryItem.findMany({
+    where: {
+      delivery: {
+        orderStatus: "ORDER_RECEIVED",
+      },
+    },
     include: {
+      delivery: true,
       product: true,
     },
   });
+
+  const inProgress = await db.deliveryItem.findMany({
+    where: {
+      delivery: {
+        orderStatus: "DELIVERY_IN_PROGRESS",
+      },
+    },
+    include: {
+      delivery: true,
+      product: true,
+    },
+  });
+
   return (
     <div>
-      {deliveries.map((deliverie) => (
-        <div key={deliverie.id}>
-          <h1>{deliverie.product.name}</h1>
-          <h1>{deliverie.quantity}</h1>
+      {inProgress.length > 0 && (
+        <div className="flex flex-col gap-5 px-5 py-6">
+          <h1 className="px-5 font-bold text-xl">ENTREGAS EM ANDAMENTO</h1>
+          {inProgress.map((deliverie) => (
+            <div key={deliverie.id}>
+              <DeliveryItem
+                deliveryItem={deliverie.delivery}
+                productItem={deliverie.product}
+              />
+            </div>
+          ))}
         </div>
-      ))}
+      )}
+
+      {receivedProducts.length > 0 && (
+        <div className="flex flex-col gap-5 px-5 py-6">
+          <h1 className="px-5 text-xl font-bold">PEDIDOS ENTREGUES</h1>
+          {receivedProducts.map((deliverie) => (
+            <div key={deliverie.id}>
+              <DeliveryItem
+                deliveryItem={deliverie.delivery}
+                productItem={deliverie.product}
+              />
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

@@ -1,0 +1,5 @@
+-- CreateEnum
+CREATE TYPE "OrderStatus" AS ENUM ('ORDER_RECEIVED', 'DELIVERY_IN_PROGRESS');
+
+-- AlterTable
+ALTER TABLE "Delivery" ADD COLUMN     "orderStatus" "OrderStatus" NOT NULL DEFAULT 'DELIVERY_IN_PROGRESS';

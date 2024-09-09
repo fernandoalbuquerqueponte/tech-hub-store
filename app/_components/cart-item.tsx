@@ -8,7 +8,6 @@ import { Card, CardContent } from "./ui/card";
 import { Button } from "./ui/button";
 import { saveProduct } from "../_actions/save-product";
 import { useSession } from "next-auth/react";
-import { redirect } from "next/navigation";
 
 export default function CartItem() {
   const {
