@@ -30,16 +30,9 @@ export default function Header() {
                 <CartMenuContent />
               </SheetContent>
             </Sheet>
-            <Sheet>
-              <SheetTrigger asChild>
-                <Button className="w-8 h-8" variant="outline" size="icon">
-                  <MenuIcon size={16} />
-                </Button>
-              </SheetTrigger>
-              <SheetContent className="p-0">
-                <MenuContent />
-              </SheetContent>
-            </Sheet>
+            <div>
+              <MenuContent />
+            </div>
           </div>
         </CardContent>
       </Card>

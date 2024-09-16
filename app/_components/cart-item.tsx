@@ -1,15 +1,27 @@
-import { useContext } from "react";
-import { ChevronLeftIcon, ChevronRightIcon, Trash2Icon } from "lucide-react";
+"use client";
+import { useContext, useState } from "react";
+import {
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  Loader2,
+  Trash2Icon,
+} from "lucide-react";
 import { CartContext } from "../_providers/cart-provider";
 import { getTotalPrice } from "../_helpers/product-price";
 import Image from "next/image";
+
+import { toast } from "sonner";
 
 import { Card, CardContent } from "./ui/card";
 import { Button } from "./ui/button";
 import { saveProduct } from "../_actions/save-product";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { format } from "date-fns";
+import { ptBR } from "date-fns/locale";
 
 export default function CartItem() {
+  const [loading, setLoading] = useState(false);
   const {
     products,
     incrementProduct,
@@ -21,6 +33,7 @@ export default function CartItem() {
   } = useContext(CartContext);
 
   const { data } = useSession();
+  const router = useRouter();
 
   function handleIncrement(productId: string) {
     incrementProduct(productId);
@@ -30,7 +43,7 @@ export default function CartItem() {
     decrementProduct(productId);
   }
 
-  function handleRemoveProduct(productId: string) {
+  async function handleRemoveProduct(productId: string) {
     removeProduct(productId);
   }
 
@@ -38,7 +51,27 @@ export default function CartItem() {
     if (!data?.user) {
       return;
     }
-    await saveProduct(products, (data?.user as any).id);
+    try {
+      setLoading(true);
+      await saveProduct(products, (data?.user as any).id);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+      toast("Compra efetuada com sucesso!", {
+        description: format(
+          new Date(),
+          "'Para' dd 'de' MMMM 'ás' HH':'mm '.'",
+          {
+            locale: ptBR,
+          }
+        ),
+        action: {
+          label: "Ver Pedido",
+          onClick: () => router.push("/deliveries"),
+        },
+      });
+    }
   }
   return (
     <div className="flex flex-col gap-6">
@@ -111,8 +144,10 @@ export default function CartItem() {
                   <h1 className="font-bold">Total</h1>
                   <h2 className="font-bold">R$ {Number(total).toFixed(2)}</h2>
                 </div>
+
                 <Button onClick={handleCreateOrder} className="w-full">
-                  CONFIRMAR COMPRA
+                  {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                  {loading ? "Carregando" : "Confirmar Compra"}
                 </Button>
               </div>
             </CardContent>
