@@ -8,15 +8,16 @@ interface ProductListProps {
 
 export default function ProductList({ products }: ProductListProps) {
   return (
-    <div className="flex flex-row gap-3 overflow-hidden overflow-x-auto [&::-webkit-scrollbar]:hidden">
+    <div className="flex flex-row gap-4 overflow-hidden overflow-x-auto [&::-webkit-scrollbar]:hidden">
       {products.map((product) => (
-        <ProductCard
-          key={product.id}
-          product={{
-            ...product,
-            totalPrice: getTotalPrice(product),
-          }}
-        />
+        <div key={product.id} className="max-w-[180px] min-w-[180px]">
+          <ProductCard
+            product={{
+              ...product,
+              totalPrice: getTotalPrice(product),
+            }}
+          />
+        </div>
       ))}
     </div>
   );

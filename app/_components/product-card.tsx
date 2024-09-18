@@ -10,7 +10,7 @@ interface ProductCardProps {
 
 export default function ProductCard({ product }: ProductCardProps) {
   return (
-    <Card className="w-[156px] h-[225]">
+    <Card className="w-full">
       <Link href={`/product/${product.slug}`}>
         <CardContent className="px-2 py-2 pb-5">
           <div className="flex flex-col gap-1">

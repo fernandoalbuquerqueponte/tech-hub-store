@@ -65,11 +65,6 @@ export default async function Home() {
         </p>
       </div>
 
-      <div className="flex px-5 py-6 flex-row gap-3 overflow-hidden overflow-x-auto [&::-webkit-scrollbar]:hidden">
-        <Banner image={banner1} />
-        <Banner image={banner2} />
-      </div>
-
       <div className="flex flex-col max-w-full px-6 py-6">
         <SectionListTitle title="Em Destaque" />
         <ProductList products={featuredProducts} />
