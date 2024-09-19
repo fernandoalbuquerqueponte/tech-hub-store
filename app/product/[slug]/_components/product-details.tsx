@@ -36,10 +36,7 @@ export default function ProductDetails({
   return (
     <div>
       <div className="w-full bg-neutral-900 h-[300px] flex items-center justify-center relative mb-5">
-        <Button className="absolute top-3 left-5" variant="outline" size="icon">
-          <ChevronLeftIcon size={20} />
-        </Button>
-        <Badge className="absolute top-3 right-5 text-lg px-4 bg-violet-600">
+        <Badge className="absolute top-3 right-5 text-lg px-4 bg-primary/30">
           {product.discountPercentage}%
         </Badge>
         <Image

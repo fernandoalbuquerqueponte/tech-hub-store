@@ -8,7 +8,7 @@ export default function DiscountBadgde({
   discountPercentage,
 }: DiscountBadgeProps) {
   return (
-    <Badge className="font-bold min-w-[50px] justify-center bg-violet-900/70">
+    <Badge className="font-bold min-w-[50px] justify-center bg-blue-700/35">
       {discountPercentage} %
     </Badge>
   );
