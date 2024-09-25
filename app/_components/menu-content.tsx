@@ -1,16 +1,14 @@
 "use client";
+import { useState } from "react";
+import { signIn, signOut, useSession } from "next-auth/react";
+import Link from "next/link";
 import {
   LogInIcon,
   LogOutIcon,
   MenuIcon,
   ShoppingBagIcon,
-  ShoppingCartIcon,
   UserCircle2Icon,
 } from "lucide-react";
-
-import { Card, CardContent } from "./ui/card";
-import { Button } from "./ui/button";
-import Link from "next/link";
 
 import {
   Sheet,
@@ -19,10 +17,8 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "../_components/ui/sheet";
-
-import { Avatar, AvatarFallback, AvatarImage } from "../_components/ui/avatar";
-import { signIn, signOut, useSession } from "next-auth/react";
-import { useState } from "react";
+import { Avatar, AvatarImage } from "../_components/ui/avatar";
+import { Button } from "./ui/button";
 
 export default function MenuContent() {
   const [sheetOpen, setSheetOpen] = useState(false);
@@ -53,9 +49,12 @@ export default function MenuContent() {
                 </div>
               )}
             </Avatar>
-            <h3 className="font-medium text-sm">
-              {session?.user ? session.user?.name : "Faça seu Login!"}
-            </h3>
+            <div className="flex flex-col">
+              <h3 className="font-medium text-md">
+                {session?.user ? session.user?.name : "Faça seu Login!"}
+              </h3>
+              <h4 className="text-sm text-[#c4c4c4]">{session?.user?.email}</h4>
+            </div>
           </div>
           {session?.user && (
             <Button
