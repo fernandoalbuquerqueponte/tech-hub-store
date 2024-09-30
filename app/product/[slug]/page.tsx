@@ -2,6 +2,7 @@ import { db } from "@/app/_lib/prisma";
 import { redirect } from "next/navigation";
 
 import ProductDetails from "./_components/product-details";
+import { getTotalPrice } from "@/app/_helpers/product-price";
 
 interface ProductDetailsProps {
   params: {
@@ -36,7 +37,10 @@ export default async function ProductDetailsPage({
     <div>
       <ProductDetails
         featuredProducts={featuredProducts}
-        product={product}
+        product={{
+          ...product,
+          totalPrice: getTotalPrice(product),
+        }}
         store={product.store}
         category={product.category}
       />

@@ -1,24 +1,23 @@
 "use client";
 import { useContext } from "react";
-import Image from "next/image";
+import { PackageIcon, ShoppingCartIcon, StarIcon } from "lucide-react";
+import { ProductWithTotalPrice } from "@/app/_helpers/product-price";
 import { CartContext } from "@/app/_providers/cart-provider";
 import { Category, Product, Store } from "@prisma/client";
-
-import {
-  ChevronLeftIcon,
-  PackageIcon,
-  ShoppingCartIcon,
-  StarIcon,
-} from "lucide-react";
+import Image from "next/image";
 
 import SectionListTitle from "@/app/_components/section-list";
 import ProductList from "@/app/_components/product-list";
 import { Button } from "@/app/_components/ui/button";
 import { Badge } from "@/app/_components/ui/badge";
 
+import { toast } from "sonner";
+import { format } from "date-fns/format";
+import { ptBR } from "date-fns/locale";
+
 interface ProductDetailsProps {
   featuredProducts: Product[];
-  product: Product;
+  product: ProductWithTotalPrice;
   store: Store;
   category: Category;
 }
@@ -26,18 +25,27 @@ interface ProductDetailsProps {
 export default function ProductDetails({
   product,
   store,
-  category,
   featuredProducts,
 }: ProductDetailsProps) {
   const { addProduct } = useContext(CartContext);
   async function handleAddProduct(product: Product) {
-    addProduct(product);
+    try {
+      addProduct(product);
+    } catch (error) {
+      throw new Error();
+    } finally {
+      toast("Produto adicionado ao carrinho!", {
+        description: format(new Date(), " dd 'de' MMMM 'ás' HH':'mm '.'", {
+          locale: ptBR,
+        }),
+      });
+    }
   }
   return (
     <div>
       <div className="w-full bg-neutral-900 h-[300px] flex items-center justify-center relative mb-5">
         <Badge className="absolute top-3 right-5 text-lg px-4 bg-primary/30">
-          {product.discountPercentage}%
+          {product.discountPercentage} %
         </Badge>
         <Image
           alt={product.name}
@@ -70,11 +78,17 @@ export default function ProductDetails({
           </div>
         </div>
         <div className="flex flex-row gap-4 items-center py-2">
-          <h2 className="text-2xl font-bold">R$ 450,00</h2>
-          <span className="text-[#c4c4c4] line-through">111</span>
+          <h2 className="text-2xl font-bold">
+            R$ {product.totalPrice.toFixed(2)}
+          </h2>
+          <span className="text-[#c4c4c4] line-through">
+            R$ {Number(product.basePrice).toFixed(2)}
+          </span>
         </div>
 
-        <span className="text-[#A1A1AA]">Em 12x s/juros de R$ 35,00</span>
+        <span className="text-[#A1A1AA]">
+          Em 12x s/juros de R$ {(product.totalPrice / 12).toFixed(2)}
+        </span>
 
         <Button
           className="w-full my-4"
