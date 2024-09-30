@@ -19,6 +19,17 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "./ui/alert-dialog";
 
 export default function CartItem() {
   const [loading, setLoading] = useState(false);
@@ -112,13 +123,32 @@ export default function CartItem() {
                   <ChevronRightIcon size={20} />
                 </Button>
               </div>
-              <Button
-                variant="outline"
-                size="icon"
-                onClick={() => handleRemoveProduct(product.id)}
-              >
-                <Trash2Icon size={20} />
-              </Button>
+
+              <AlertDialog>
+                <AlertDialogTrigger>
+                  <Button variant="outline" size="icon">
+                    <Trash2Icon size={20} />
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>
+                      Tem certeza que deseja remover o item do carrinho?
+                    </AlertDialogTitle>
+                    <AlertDialogDescription>
+                      Essa ação é irreversivel
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                    <AlertDialogAction
+                      onClick={() => handleRemoveProduct(product.id)}
+                    >
+                      Remover Produto
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
             </div>
           </div>
         </div>
