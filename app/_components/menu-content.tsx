@@ -19,6 +19,17 @@ import {
 } from "../_components/ui/sheet";
 import { Avatar, AvatarImage } from "../_components/ui/avatar";
 import { Button } from "./ui/button";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "./ui/alert-dialog";
 
 export default function MenuContent() {
   const [sheetOpen, setSheetOpen] = useState(false);
@@ -53,18 +64,36 @@ export default function MenuContent() {
               <h3 className="font-medium text-md">
                 {session?.user ? session.user?.name : "Faça seu Login!"}
               </h3>
-              <h4 className="text-sm text-[#c4c4c4]">{session?.user?.email}</h4>
+              <h4 className="text-sm text-[#c4c4c4] text-ellipsis overflow-x-hidden">
+                {session?.user?.email}
+              </h4>
             </div>
           </div>
           {session?.user && (
-            <Button
-              variant="outline"
-              size="icon"
-              className="w-9 h-9"
-              onClick={() => signOut()}
-            >
-              <LogOutIcon size={16} />
-            </Button>
+            <AlertDialog>
+              <AlertDialogTrigger>
+                <Button variant="outline" size="icon" className="w-9 h-9">
+                  <LogOutIcon size={16} />
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>
+                    Tem certeza que deseja sair da conta?
+                  </AlertDialogTitle>
+                  <AlertDialogDescription>
+                    Seus dados estarão seguros e você poderá voltar a qualquer
+                    momento.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                  <AlertDialogAction onClick={() => signOut()}>
+                    Sair da conta
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
           )}
         </div>
 
