@@ -15,7 +15,7 @@ import { toast } from "sonner";
 import { Card, CardContent } from "./ui/card";
 import { Button } from "./ui/button";
 import { saveProduct } from "../_actions/save-product";
-import { useSession } from "next-auth/react";
+import { useSession, signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
@@ -60,7 +60,7 @@ export default function CartItem() {
 
   async function handleCreateOrder() {
     if (!data?.user) {
-      return;
+      return signIn("google");
     }
     try {
       setLoading(true);

@@ -60,14 +60,9 @@ export default function MenuContent() {
                 </div>
               )}
             </Avatar>
-            <div className="flex flex-col">
-              <h3 className="font-medium text-md">
-                {session?.user ? session.user?.name : "Faça seu Login!"}
-              </h3>
-              <h4 className="text-sm text-[#c4c4c4] text-ellipsis overflow-x-hidden">
-                {session?.user?.email}
-              </h4>
-            </div>
+            <h3 className="font-medium text-md">
+              {session?.user ? session.user?.name : "Faça seu Login!"}
+            </h3>
           </div>
           {session?.user && (
             <AlertDialog>
