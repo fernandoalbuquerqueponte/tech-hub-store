@@ -101,6 +101,12 @@ model Delivery {
   user           User           @relation(fields: [userId], references: [id], onDelete: Cascade)
   deliveriesItem DeliveryItem[]
   orderStatus    OrderStatus    @default(DELIVERY_IN_PROGRESS)
+  paymentStatus  PaymentStatus  @default(WAITING_FOR_PAYMENT)
+}
+
+enum PaymentStatus {
+  WAITING_FOR_PAYMENT
+  PAYMENT_CONFIRMED
 }
 
 enum OrderStatus {
