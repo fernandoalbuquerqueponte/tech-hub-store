@@ -30,6 +30,9 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "./ui/alert-dialog";
+import { createCheckout } from "../_actions/checkout";
+
+import { loadStripe } from "@stripe/stripe-js";
 
 export default function CartItem() {
   const [loading, setLoading] = useState(false);
@@ -60,30 +63,19 @@ export default function CartItem() {
 
   async function handleCreateOrder() {
     if (!data?.user) {
-      return signIn("google");
+      return;
     }
-    try {
-      setLoading(true);
-      await saveProduct(products, (data?.user as any).id);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false);
-      toast("Compra efetuada com sucesso!", {
-        description: format(
-          new Date(),
-          "'Para' dd 'de' MMMM 'ás' HH':'mm '.'",
-          {
-            locale: ptBR,
-          }
-        ),
-        action: {
-          label: "Ver Pedido",
-          onClick: () => router.push("/deliveries"),
-        },
-      });
-    }
+
+    const delivery = await saveProduct(products, (data?.user as any).id);
+
+    const checkout = await createCheckout(products, delivery.id);
+    const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY);
+
+    stripe?.redirectToCheckout({
+      sessionId: checkout.id,
+    });
   }
+
   return (
     <div className="flex flex-col gap-6">
       {products.map((product) => (
