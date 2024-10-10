@@ -102,6 +102,7 @@ model Delivery {
   deliveriesItem DeliveryItem[]
   orderStatus    OrderStatus    @default(DELIVERY_IN_PROGRESS)
   paymentStatus  PaymentStatus  @default(WAITING_FOR_PAYMENT)
+  createdAt      DateTime       @default(now())
 }
 
 enum PaymentStatus {

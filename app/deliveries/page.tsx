@@ -37,6 +37,7 @@ export default async function Deliveries() {
 
   return (
     <div>
+      <h1 className="font-bold text-xl px-6 py-6">MEUS PRODUTOS</h1>
       {inProgress.length > 0 && (
         <div className="flex flex-col gap-5 px-5 py-6">
           <h1 className="px-5 font-bold text-xl">ENTREGAS EM ANDAMENTO</h1>

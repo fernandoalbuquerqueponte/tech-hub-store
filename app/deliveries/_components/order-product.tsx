@@ -1,9 +1,16 @@
 "use client";
-import { Badge } from "@/app/_components/ui/badge";
-import { Button } from "@/app/_components/ui/button";
 import { Card, CardContent } from "@/app/_components/ui/card";
-import { recieveProduct } from "../_actions/receiveProduct";
 import { Delivery, Product } from "@prisma/client";
+import Image from "next/image";
+import {
+  BoxIcon,
+  CalendarIcon,
+  ChevronRight,
+  CreditCardIcon,
+} from "lucide-react";
+import { format } from "date-fns";
+import { ptBR } from "date-fns/locale";
+import { Badge } from "@/app/_components/ui/badge";
 
 interface DeliveryItemProps {
   productItem: Product;
@@ -14,40 +21,62 @@ export default function DeliveryItem({
   productItem,
   deliveryItem,
 }: DeliveryItemProps) {
-  async function handleRecieveDelivery() {
-    await recieveProduct(deliveryItem);
-  }
   return (
     <div>
-      {deliveryItem.orderStatus === "ORDER_RECEIVED" ? (
-        <Card className="py-3 w-full bg-zinc-900">
-          <CardContent className="flex flex-col gap-4">
-            <div className="w-auto">
-              <Badge className="bg-zinc-600">Pedido Recebido</Badge>
+      <Card className="bg-neutral-900">
+        <CardContent className="py-5 px-5 flex flex-col gap-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <BoxIcon size={20} />
+              <h2>
+                {deliveryItem.orderStatus === "ORDER_RECEIVED"
+                  ? "Pedido Recebido"
+                  : "Entrega em andamento"}
+              </h2>
             </div>
-            <h1 className="text-ellipsis text-nowrap overflow-hidden">
+            <ChevronRight size={20} />
+          </div>
+
+          <div className="flex items-center gap-3">
+            <Image
+              alt={productItem.name}
+              src={productItem.imageUrl}
+              width={100}
+              height={100}
+            />
+            <h1 className="line-clamp-2 text-ellipsis overflow-hidden font-semibold">
               {productItem.name}
             </h1>
-            <Button className="bg-zinc-600" onClick={handleRecieveDelivery}>
-              Avaliar Pedido
-            </Button>
-          </CardContent>
-        </Card>
-      ) : (
-        <Card className="py-3 w-full bg-zinc-900">
-          <CardContent className="flex flex-col gap-4">
-            <div className="w-auto">
-              <Badge className="bg-green-700">Entrega em Andamento</Badge>
+          </div>
+          <div className="flex flex-col gap-2">
+            <div className="flex items-center gap-3">
+              <CalendarIcon size={20} />
+              <p className="text-[#c4c4c4]">
+                {format(
+                  new Date(deliveryItem.createdAt),
+                  "dd/MM/yyyy 'ás' HH:mm",
+                  { locale: ptBR }
+                )}
+              </p>
             </div>
-            <h1 className="text-ellipsis text-nowrap overflow-hidden">
-              {productItem.name}
-            </h1>
-            <Button className="bg-green-700" onClick={handleRecieveDelivery}>
-              Confirmar Pedido
-            </Button>
-          </CardContent>
-        </Card>
-      )}
+            <div className="flex items-center gap-3">
+              <CreditCardIcon size={20} />
+              <p className="text-[#c4c4c4]">Status de pagamento:</p>
+              <Badge
+                className={
+                  deliveryItem.paymentStatus === "PAYMENT_CONFIRMED"
+                    ? "bg-green-500 text-white"
+                    : "bg-blue-500 text-white"
+                }
+              >
+                {deliveryItem.paymentStatus === "PAYMENT_CONFIRMED"
+                  ? "PAGO"
+                  : "PAGAMENTO PENDENTE"}
+              </Badge>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }
