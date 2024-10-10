@@ -1,5 +1,3 @@
-import { Badge } from "./ui/badge";
-
 interface SectionListTitleProps {
   title: string;
 }

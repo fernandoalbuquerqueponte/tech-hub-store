@@ -10,15 +10,11 @@ import { CartContext } from "../_providers/cart-provider";
 import { getTotalPrice } from "../_helpers/product-price";
 import Image from "next/image";
 
-import { toast } from "sonner";
-
 import { Card, CardContent } from "./ui/card";
 import { Button } from "./ui/button";
 import { saveProduct } from "../_actions/save-product";
-import { useSession, signIn } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { format } from "date-fns";
-import { ptBR } from "date-fns/locale";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -47,7 +43,6 @@ export default function CartItem() {
   } = useContext(CartContext);
 
   const { data } = useSession();
-  const router = useRouter();
 
   function handleIncrement(productId: string) {
     incrementProduct(productId);

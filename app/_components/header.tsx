@@ -1,5 +1,5 @@
 "use client";
-import { MenuIcon, ShoppingCartIcon } from "lucide-react";
+import { ShoppingCartIcon } from "lucide-react";
 
 import { Sheet, SheetContent, SheetTrigger } from "../_components/ui/sheet";
 import { Card, CardContent } from "./ui/card";

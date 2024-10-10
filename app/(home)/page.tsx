@@ -3,11 +3,7 @@ import { db } from "@/app/_lib/prisma";
 import SectionListTitle from "../_components/section-list";
 import ProductList from "../_components/product-list";
 import Search from "../_components/search";
-import Banner from "./_components/banner";
 
-import banner1 from "../../public/banner1.png";
-import banner2 from "../../public/banner2.png";
-import { useSession } from "next-auth/react";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../_lib/auth";
 import { format } from "date-fns/format";
