@@ -4,7 +4,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../_lib/auth";
 import DeliveryItem from "./_components/order-product";
 
-export default async function Deliveries() {
+export default async function Orders() {
   const session = await getServerSession(authOptions);
 
   if (!session?.user) {
@@ -15,6 +15,7 @@ export default async function Deliveries() {
     where: {
       delivery: {
         orderStatus: "ORDER_RECEIVED",
+        paymentStatus: "PAYMENT_CONFIRMED",
       },
     },
     include: {
