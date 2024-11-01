@@ -4,6 +4,7 @@ import {
   ChevronLeftIcon,
   ChevronRightIcon,
   Loader2,
+  ShoppingCartIcon,
   Trash2Icon,
 } from "lucide-react";
 import { CartContext } from "../_providers/cart-provider";
@@ -14,7 +15,6 @@ import { Card, CardContent } from "./ui/card";
 import { Button } from "./ui/button";
 import { saveProduct } from "../_actions/save-product";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -60,15 +60,23 @@ export default function CartItem() {
     if (!data?.user) {
       return;
     }
+    try {
+      setLoading(true);
+      const delivery = await saveProduct(products, (data?.user as any).id);
 
-    const delivery = await saveProduct(products, (data?.user as any).id);
+      const checkout = await createCheckout(products, delivery.id);
+      const stripe = await loadStripe(
+        process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY
+      );
 
-    const checkout = await createCheckout(products, delivery.id);
-    const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY);
-
-    stripe?.redirectToCheckout({
-      sessionId: checkout.id,
-    });
+      stripe?.redirectToCheckout({
+        sessionId: checkout.id,
+      });
+    } catch (error) {
+      console.error("Erro ao fazer processamento da compra.", error);
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -95,7 +103,7 @@ export default function CartItem() {
                   size="icon"
                   onClick={() => handleDecrement(product.id)}
                 >
-                  <ChevronLeftIcon size={20} />
+                  <ChevronLeftIcon size={18} />
                 </Button>
 
                 <div className="flex items-center">
@@ -107,7 +115,7 @@ export default function CartItem() {
                   size="icon"
                   onClick={() => handleIncrement(product.id)}
                 >
-                  <ChevronRightIcon size={20} />
+                  <ChevronRightIcon size={18} />
                 </Button>
               </div>
 
@@ -170,10 +178,9 @@ export default function CartItem() {
             </CardContent>
           </Card>
         ) : (
-          <div className="w-full h-full flex flex-col gap-2">
-            <h1 className="font-bold text-xl">
-              Você ainda não adicionou nada ao seu carrinho.
-            </h1>
+          <div className="w-full h-full flex flex-col gap-2 justify-center items-center">
+            <ShoppingCartIcon size={65} />
+            <h1 className="font-bold text-xl">Seu carrinho está vazio</h1>
             <span className="text-center text-sm text-[#C4C4C4]">
               Dê uma olhada em nossa seleção e escolha o que mais gosta!
             </span>
