@@ -69,23 +69,25 @@ export function OrderProductContent({
                 R$ {getTotalPrice(productItem).toFixed(2)}
               </h4>
             </div>
-            {deliveryItem.paymentStatus === "WAITING_FOR_PAYMENT" && (
-              <Button
-                onClick={() => handleConfirmPayment()}
-                className="items-center-center bg-green-600"
-              >
-                Fazer pagamento
-              </Button>
-            )}
+            {deliveryItem.paymentStatus === "WAITING_FOR_PAYMENT" &&
+              deliveryItem.orderStatus === "DELIVERY_IN_PROGRESS" && (
+                <Button
+                  onClick={() => handleConfirmPayment()}
+                  className="items-center-center bg-green-600"
+                >
+                  Fazer pagamento
+                </Button>
+              )}
 
-            {deliveryItem.paymentStatus === "PAYMENT_CONFIRMED" && (
-              <Button
-                onClick={() => handleConfirmReceivedProduct()}
-                className="items-center-center"
-              >
-                Confirmar Entrega
-              </Button>
-            )}
+            {deliveryItem.paymentStatus === "PAYMENT_CONFIRMED" &&
+              deliveryItem.orderStatus === "DELIVERY_IN_PROGRESS" && (
+                <Button
+                  onClick={() => handleConfirmReceivedProduct()}
+                  className="items-center-center"
+                >
+                  Confirmar Entrega
+                </Button>
+              )}
           </div>
         </CardContent>
       </Card>
