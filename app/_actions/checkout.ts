@@ -21,8 +21,8 @@ export async function createCheckout(
   const checkout = await stripe.checkout.sessions.create({
     payment_method_types: ["card", "boleto"],
     mode: "payment",
-    success_url: "http://localhost:3000",
-    cancel_url: "http://localhost:3000",
+    success_url: process.env.APP_URL,
+    cancel_url: process.env.APP_URL,
     metadata: {
       deliveryId,
     },
