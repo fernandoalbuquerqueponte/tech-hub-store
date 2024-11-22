@@ -31,14 +31,13 @@ export default function ProductDetails({
   async function handleAddProduct(product: Product) {
     try {
       addProduct(product);
-    } catch (error) {
-      throw new Error();
-    } finally {
       toast("Produto adicionado ao carrinho!", {
         description: format(new Date(), " dd 'de' MMMM 'ás' HH':'mm '.'", {
           locale: ptBR,
         }),
       });
+    } catch (error) {
+      throw new Error();
     }
   }
   return (
