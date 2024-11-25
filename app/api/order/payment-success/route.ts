@@ -23,7 +23,7 @@ export async function POST(request: Request) {
   );
 
   if (event.type === "checkout.session.completed") {
-    const session = event.data.object as any;
+    const session = event.data.object;
     const sessionWithLineItems = await stripe.checkout.sessions.retrieve(
       event.data.object.id,
       {
@@ -35,7 +35,7 @@ export async function POST(request: Request) {
 
     await prisma.delivery.update({
       where: {
-        id: session.metadata.deliveryId,
+        id: session?.metadata?.deliveryId,
       },
       data: {
         paymentStatus: "PAYMENT_CONFIRMED",

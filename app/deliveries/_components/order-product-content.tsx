@@ -11,6 +11,7 @@ import { Button } from "@/app/_components/ui/button";
 
 import { loadStripe } from "@stripe/stripe-js";
 import { createCheckout } from "@/app/_actions/checkout";
+import { PAYMENT_STATUS } from "@/app/_constains/product";
 
 export function OrderProductContent({
   productItem,
@@ -57,11 +58,7 @@ export function OrderProductContent({
             </div>
             <div className="flex items-center justify-between">
               <h3>Status:</h3>
-              <p>
-                {deliveryItem.paymentStatus === "PAYMENT_CONFIRMED"
-                  ? "PAGO"
-                  : "PAGAMENTO PENDENTE"}
-              </p>
+              <p>{PAYMENT_STATUS[deliveryItem.paymentStatus]}</p>
             </div>
             <div className="flex items-center justify-between">
               <h3 className="font-bold">Total:</h3>

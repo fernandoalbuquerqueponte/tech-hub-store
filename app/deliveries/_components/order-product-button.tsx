@@ -12,6 +12,7 @@ import { DeliveryItemProps } from "./order-product";
 
 import { Badge } from "@/app/_components/ui/badge";
 import { Card, CardContent } from "@/app/_components/ui/card";
+import { ORDER_STATUS, PAYMENT_STATUS } from "@/app/_constains/product";
 
 export function OrderProductButton({
   productItem,
@@ -23,11 +24,7 @@ export function OrderProductButton({
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <BoxIcon size={20} />
-            <h2>
-              {deliveryItem.orderStatus === "ORDER_RECEIVED"
-                ? "Pedido Recebido"
-                : "Entrega em andamento"}
-            </h2>
+            <h2>{ORDER_STATUS[deliveryItem.orderStatus]}</h2>
           </div>
           <ChevronRight aria-label="Informações do pedido" size={20} />
         </div>
@@ -64,9 +61,7 @@ export function OrderProductButton({
                   : "bg-blue-500 text-white"
               }
             >
-              {deliveryItem.paymentStatus === "PAYMENT_CONFIRMED"
-                ? "PAGO"
-                : "PAGAMENTO PENDENTE"}
+              {PAYMENT_STATUS[deliveryItem.paymentStatus]}
             </Badge>
           </div>
         </div>
