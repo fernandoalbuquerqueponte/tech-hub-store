@@ -36,11 +36,13 @@ export default async function ProductDetailsPage({
   return (
     <div>
       <ProductDetails
-        featuredProducts={featuredProducts}
-        product={{
-          ...product,
-          totalPrice: getTotalPrice(product),
-        }}
+        featuredProducts={JSON.parse(JSON.stringify(featuredProducts))}
+        product={JSON.parse(
+          JSON.stringify({
+            ...product,
+            totalPrice: getTotalPrice(product),
+          })
+        )}
         store={product.store}
         category={product.category}
       />

@@ -31,10 +31,9 @@ export default async function Products({ searchParams }: ProductsPageProps) {
           {products.map((p) => (
             <div className="max-w-[180px] min-w-[180px]" key={p.id}>
               <ProductCard
-                product={{
-                  ...p,
-                  totalPrice: getTotalPrice(p),
-                }}
+                product={JSON.parse(
+                  JSON.stringify({ ...p, totalPrice: getTotalPrice(p) })
+                )}
               />
             </div>
           ))}
