@@ -1,8 +1,7 @@
-import { db } from "@/app/_lib/prisma";
 import { redirect } from "next/navigation";
-
 import ProductDetails from "./_components/product-details";
 import { getTotalPrice } from "@/app/_helpers/product-price";
+import getProducts from "@/app/_data/get-product";
 
 interface ProductDetailsProps {
   params: {
@@ -13,21 +12,7 @@ interface ProductDetailsProps {
 export default async function ProductDetailsPage({
   params,
 }: ProductDetailsProps) {
-  const product = await db.product.findUnique({
-    where: {
-      slug: params.slug,
-    },
-    include: {
-      store: true,
-      category: true,
-    },
-  });
-
-  const featuredProducts = await db.product.findMany({
-    where: {
-      categoryId: product?.categoryId,
-    },
-  });
+  const { product, featuredProducts } = await getProducts({ params });
 
   if (!product) {
     return redirect("/");

@@ -18,6 +18,7 @@ export default async function Products({ searchParams }: ProductsPageProps) {
       },
     },
   });
+
   return (
     <div className="flex flex-col items-center justify-center px-5">
       <div className="w-full px-5 py-6">
@@ -28,11 +29,14 @@ export default async function Products({ searchParams }: ProductsPageProps) {
       </div>
       {products.length > 0 ? (
         <div className="grid grid-cols-2 gap-4">
-          {products.map((p) => (
-            <div className="max-w-[180px] min-w-[180px]" key={p.id}>
+          {products.map((product) => (
+            <div className="max-w-[180px] min-w-[180px]" key={product.id}>
               <ProductCard
                 product={JSON.parse(
-                  JSON.stringify({ ...p, totalPrice: getTotalPrice(p) })
+                  JSON.stringify({
+                    ...product,
+                    totalPrice: getTotalPrice(product),
+                  })
                 )}
               />
             </div>
