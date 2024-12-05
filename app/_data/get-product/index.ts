@@ -3,6 +3,7 @@ import { db } from "../../_lib/prisma";
 interface GetProductsProps {
   params?: {
     slug?: string;
+    id?: string;
   };
 }
 
@@ -11,12 +12,14 @@ export default async function getProducts({ params }: GetProductsProps = {}) {
     const product = await db.product.findUnique({
       where: {
         slug: params?.slug,
+        id: params?.id,
       },
       include: {
         store: true,
         category: true,
       },
     });
+
     if (!product) {
       throw new Error("Produto não encontrado");
     }

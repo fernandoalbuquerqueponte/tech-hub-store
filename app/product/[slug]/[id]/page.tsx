@@ -13,6 +13,7 @@ export default async function ProductDetailsPage({
   params,
 }: ProductDetailsProps) {
   const { product, featuredProducts } = await getProducts({ params });
+  console.log({ params });
 
   if (!product) {
     return redirect("/");
