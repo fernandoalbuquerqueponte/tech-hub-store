@@ -2,16 +2,16 @@
 
 import { DeliveryItemProps } from "./order-product";
 import Image from "next/image";
-import { getTotalPrice } from "@/app/_helpers/product-price";
-import { confirmReceivedProductItem } from "../_actions/confirm-received-product";
 
 import { SheetHeader, SheetTitle } from "@/app/_components/ui/sheet";
 import { Card, CardContent } from "@/app/_components/ui/card";
 import { Button } from "@/app/_components/ui/button";
 
-import { loadStripe } from "@stripe/stripe-js";
+import { confirmReceivedProductItem } from "../_actions/confirm-received-product";
+import { getTotalPrice } from "@/app/_helpers/product-price";
 import { createCheckout } from "@/app/_actions/checkout";
 import { PAYMENT_STATUS } from "@/app/_constains/product";
+import { loadStripe } from "@stripe/stripe-js";
 
 export function OrderProductContent({
   productItem,
@@ -24,7 +24,9 @@ export function OrderProductContent({
 
   async function handleConfirmPayment() {
     const checkout = await createCheckout(productItem, deliveryItem.id);
-    const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY);
+    const stripe = await loadStripe(
+      process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY as string
+    );
 
     stripe?.redirectToCheckout({
       sessionId: checkout.id,
