@@ -10,7 +10,7 @@ export async function createCheckout(
   productsOrProduct: CheckoutProduct | CheckoutProduct[],
   deliveryId: string
 ) {
-  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
     apiVersion: "2024-09-30.acacia",
   });
 
@@ -21,8 +21,8 @@ export async function createCheckout(
   const checkout = await stripe.checkout.sessions.create({
     payment_method_types: ["card", "boleto"],
     mode: "payment",
-    success_url: process.env.APP_URL,
-    cancel_url: process.env.APP_URL,
+    success_url: process.env.APP_URL as string,
+    cancel_url: process.env.APP_URL as string,
     metadata: {
       deliveryId,
     },

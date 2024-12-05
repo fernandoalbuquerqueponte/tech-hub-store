@@ -65,6 +65,10 @@ export default function CartItem() {
       const delivery = await saveProduct(products, (data?.user as any).id);
 
       const checkout = await createCheckout(products, delivery.id);
+
+      if (!process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY) {
+        throw new Error("Chave pública do Stripe não está configurada.");
+      }
       const stripe = await loadStripe(
         process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY
       );

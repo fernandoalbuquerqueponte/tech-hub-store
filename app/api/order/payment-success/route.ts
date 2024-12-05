@@ -4,7 +4,7 @@ import Stripe from "stripe";
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
   apiVersion: "2024-09-30.acacia",
 });
 
@@ -16,6 +16,11 @@ export async function POST(request: Request) {
   }
 
   const text = await request.text();
+
+  if (!process.env.STRIPE_WEBHOOK_SECRET_KEY) {
+    throw new Error("Missing STRIPE_WEBHOOK_SECRET_KEY environment variable");
+  }
+
   const event = stripe.webhooks.constructEvent(
     text,
     signature,
