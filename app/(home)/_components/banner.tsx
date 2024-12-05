@@ -1,18 +1,17 @@
-import Image, { StaticImageData } from "next/image";
+import { cn } from "@/app/_lib/utils";
+import Image, { ImageProps } from "next/image";
 
-interface BannerProps {
-  image: StaticImageData;
-}
-
-export default function Banner({ image }: BannerProps) {
+export default function Banner({ alt, src, className, ...props }: ImageProps) {
   return (
     <Image
-      style={{
-        objectFit: "contain",
-      }}
-      className="max-w-full max-h-[230px]"
-      alt="dfe"
-      src={image}
+      width={0}
+      height={0}
+      sizes="100vw"
+      quality={100}
+      className={cn("h-auto w-full", className)}
+      alt={alt}
+      src={src}
+      {...props}
     />
   );
 }

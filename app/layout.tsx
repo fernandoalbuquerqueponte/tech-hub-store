@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 
-
 import Header from "./_components/header";
 import AuthProvider from "./_providers/auth";
 import CartProvider from "./_providers/cart-provider";
@@ -23,12 +22,14 @@ export default function RootLayout({
   return (
     <html lang="pt-br" className={`${inter.className} dark`}>
       <body className={inter.className}>
-        <AuthProvider>
-          <CartProvider>
-            <Header />
-            {children}
-          </CartProvider>
-        </AuthProvider>
+        <div className="flex h-full flex-col">
+          <AuthProvider>
+            <CartProvider>
+              <Header />
+              <div className="flex-1">{children}</div>
+            </CartProvider>
+          </AuthProvider>
+        </div>
       </body>
       <Toaster />
     </html>
