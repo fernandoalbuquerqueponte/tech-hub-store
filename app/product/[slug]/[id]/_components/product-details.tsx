@@ -1,22 +1,19 @@
 "use client";
 import { useContext } from "react";
+import Image from "next/image";
 import { PackageIcon, ShoppingCartIcon, StarIcon } from "lucide-react";
+
+import { Button } from "@/app/_components/ui/button";
+import { Badge } from "@/app/_components/ui/badge";
+import { toast } from "sonner";
+
 import { ProductWithTotalPrice } from "@/app/_helpers/product-price";
 import { CartContext } from "@/app/_providers/cart-provider";
 import { Category, Product, Store } from "@prisma/client";
-import Image from "next/image";
-
-import SectionListTitle from "@/app/_components/section-list";
-import ProductList from "@/app/_components/product-list";
-import { Button } from "@/app/_components/ui/button";
-import { Badge } from "@/app/_components/ui/badge";
-
-import { toast } from "sonner";
 import { format } from "date-fns/format";
 import { ptBR } from "date-fns/locale";
 
 interface ProductDetailsProps {
-  featuredProducts: Product[];
   product: ProductWithTotalPrice;
   store: Store;
   category: Category;
@@ -25,7 +22,6 @@ interface ProductDetailsProps {
 export default function ProductDetails({
   product,
   store,
-  featuredProducts,
 }: ProductDetailsProps) {
   const { addProduct } = useContext(CartContext);
   async function handleAddProduct(product: Product) {
@@ -37,28 +33,30 @@ export default function ProductDetails({
         }),
       });
     } catch (error) {
+      toast.error("Ocorreu um erro ao adicionar o produto ao carrinho!");
       throw new Error();
     }
   }
   return (
-    <div>
-      <div className="w-full bg-neutral-900 h-[300px] flex items-center justify-center relative mb-5">
+    <div className="lg:grid lg:grid-cols-2 lg:mt-5">
+      <div className="w-full bg-neutral-900 h-[300px] lg:h-full flex justify-center relative">
         <Badge className="absolute top-3 right-5 text-lg px-4 bg-primary/30">
           {product.discountPercentage} %
         </Badge>
         <Image
           alt={product.name}
           src={product.imageUrl}
-          width={300}
-          height={300}
+          width={350}
+          height={350}
+          quality={100}
           style={{
-            objectFit: "cover",
+            objectFit: "contain",
           }}
         />
       </div>
 
-      <div className="px-5">
-        <h1 className="text-2xl font-medium w-full ">{product.name}</h1>
+      <div className="px-5 space-y-4">
+        <h1 className="text-2xl font-medium w-full">{product.name}</h1>
 
         <div className="flex flex-col gap-1">
           <span className="text-[#A1A1AA]">
@@ -90,7 +88,7 @@ export default function ProductDetails({
         </span>
 
         <Button
-          className="w-full my-4"
+          className="w-full "
           variant="default"
           onClick={() => handleAddProduct(product)}
         >
@@ -100,11 +98,6 @@ export default function ProductDetails({
 
         <h3 className="text-2xl py-3">Descrição</h3>
         <p className="text-[#A1A1AA] break-all">{product.description}</p>
-
-        <div className="py-6">
-          <SectionListTitle title="PRODUTOS RECOMENDADOS" />
-          <ProductList products={featuredProducts} />
-        </div>
       </div>
     </div>
   );
