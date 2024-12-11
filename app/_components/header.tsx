@@ -1,5 +1,5 @@
 "use client";
-import { ShoppingCartIcon } from "lucide-react";
+import { MenuIcon, ShoppingCartIcon } from "lucide-react";
 
 import { Sheet, SheetContent, SheetTrigger } from "../_components/ui/sheet";
 import { Card, CardContent } from "./ui/card";
@@ -10,8 +10,15 @@ import Link from "next/link";
 import MenuContent from "./menu-content";
 import CartMenuContent from "./cart-menu";
 import Search from "./search";
+import { useState } from "react";
 
 export default function Header() {
+  const [sheetOpen, setSheetOpen] = useState(false);
+
+  function handleCloseSheet() {
+    setSheetOpen(false);
+  }
+
   return (
     <header>
       <Card>
@@ -29,18 +36,25 @@ export default function Header() {
           <div className="flex flex-row gap-3 items-center">
             <Sheet>
               <SheetTrigger asChild>
-                <Button className="w-8 h-8" variant="outline" size="icon">
-                  <ShoppingCartIcon size={16} />
+                <Button className="w-9 h-9" variant="outline" size="icon">
+                  <ShoppingCartIcon size={17} />
                 </Button>
               </SheetTrigger>
               <div className="w-px h-7 bg-zinc-700"></div>
-              <SheetContent className="p-0">
+              <SheetContent className="w-[370px] lg:w-[600px] lg:max-w-[600px] p-0">
                 <CartMenuContent />
               </SheetContent>
             </Sheet>
-            <div>
-              <MenuContent />
-            </div>
+            <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
+              <SheetTrigger asChild>
+                <Button className="w-9 h-9" variant="outline" size="icon">
+                  <MenuIcon size={17} />
+                </Button>
+              </SheetTrigger>
+              <SheetContent className="p-0">
+                <MenuContent handleCloseSheet={handleCloseSheet} />
+              </SheetContent>
+            </Sheet>
           </div>
         </CardContent>
       </Card>
