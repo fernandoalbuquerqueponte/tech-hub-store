@@ -111,16 +111,10 @@ export default function CartItem() {
               <h1 className="font-bold">{product.name}</h1>
               <div className="flex flex-row items-center gap-3">
                 <h2 className="font-medium text-md">
-                  {Intl.NumberFormat("pt-BR", {
-                    style: "currency",
-                    currency: "BRL",
-                  }).format(total)}
+                  {getTotalPrice(Number(total))}
                 </h2>
                 <h4 className="font-medium text-sm line-through text-neutral-400">
-                  {Intl.NumberFormat("pt-BR", {
-                    style: "currency",
-                    currency: "BRL",
-                  }).format(subtotal)}
+                  {getTotalPrice(Number(subtotal))}
                 </h4>
               </div>
             </div>
@@ -185,12 +179,7 @@ export default function CartItem() {
               <div className="flex flex-col gap-4">
                 <div className="flex justify-between">
                   <h1>Subtotal</h1>
-                  <h2>
-                    {Intl.NumberFormat("pt-BR", {
-                      style: "currency",
-                      currency: "BRL",
-                    }).format(subtotal)}
-                  </h2>
+                  <h2>{getTotalPrice(Number(subtotal))}</h2>
                 </div>
                 <div className="flex justify-between">
                   <h1>Entrega</h1>
@@ -198,22 +187,11 @@ export default function CartItem() {
                 </div>
                 <div className="flex justify-between">
                   <h1>Descontos</h1>
-                  <h2>
-                    -{" "}
-                    {Intl.NumberFormat("pt-BR", {
-                      style: "currency",
-                      currency: "BRL",
-                    }).format(discount)}
-                  </h2>
+                  <h2>- {getTotalPrice(Number(discount))}</h2>
                 </div>
                 <div className="flex justify-between">
                   <h1 className="font-bold">Total</h1>
-                  <h2 className="font-bold">
-                    {Intl.NumberFormat("pt-BR", {
-                      style: "currency",
-                      currency: "BRL",
-                    }).format(total)}
-                  </h2>
+                  <h2 className="font-bold">{getTotalPrice(Number(total))}</h2>
                 </div>
 
                 <Button onClick={handleCreateOrder} className="w-full">

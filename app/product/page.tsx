@@ -31,14 +31,7 @@ export default async function Products({ searchParams }: ProductsPageProps) {
         <div className="grid grid-cols-2 gap-4">
           {products.map((product) => (
             <div className="max-w-[180px] min-w-[180px]" key={product.id}>
-              <ProductCard
-                product={JSON.parse(
-                  JSON.stringify({
-                    ...product,
-                    totalPrice: getTotalPrice(product),
-                  })
-                )}
-              />
+              <ProductCard product={product} />
             </div>
           ))}
         </div>

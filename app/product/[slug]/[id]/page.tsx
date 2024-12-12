@@ -23,12 +23,7 @@ export default async function ProductDetailsPage({
   return (
     <div className="mx-auto flex flex-col gap-8 py-2 lg:container lg:gap-7">
       <ProductDetails
-        product={JSON.parse(
-          JSON.stringify({
-            ...product,
-            totalPrice: getTotalPrice(product),
-          })
-        )}
+        product={product}
         store={product.store}
         category={product.category}
       />

@@ -65,7 +65,7 @@ export function OrderProductContent({
             <div className="flex items-center justify-between">
               <h3 className="font-bold">Total:</h3>
               <h4 className="font-bold">
-                R$ {getTotalPrice(productItem).toFixed(2)}
+                {getTotalPrice(Number(productItem.basePrice))}
               </h4>
             </div>
             {deliveryItem.paymentStatus === "WAITING_FOR_PAYMENT" &&

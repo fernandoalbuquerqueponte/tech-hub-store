@@ -11,12 +11,7 @@ export default function ProductList({ products }: ProductListProps) {
     <div className="flex flex-row gap-4 overflow-hidden overflow-x-auto [&::-webkit-scrollbar]:hidden">
       {products.map((product) => (
         <div key={product.id} className="max-w-[180px] min-w-[180px]">
-          <ProductCard
-            product={{
-              ...product,
-              totalPrice: getTotalPrice(product),
-            }}
-          />
+          <ProductCard product={product} />
         </div>
       ))}
     </div>

@@ -1,20 +1,19 @@
 "use client";
 import { useContext } from "react";
 import Image from "next/image";
+import { Category, Product, Store } from "@prisma/client";
 import { PackageIcon, ShoppingCartIcon, StarIcon } from "lucide-react";
+
+import { getTotalPrice } from "@/app/_helpers/product-price";
+import { CartContext } from "@/app/_providers/cart-provider";
+import { format } from "date-fns/format";
+import { ptBR } from "date-fns/locale";
 
 import { Button } from "@/app/_components/ui/button";
 import { Badge } from "@/app/_components/ui/badge";
 import { toast } from "sonner";
-
-import { ProductWithTotalPrice } from "@/app/_helpers/product-price";
-import { CartContext } from "@/app/_providers/cart-provider";
-import { Category, Product, Store } from "@prisma/client";
-import { format } from "date-fns/format";
-import { ptBR } from "date-fns/locale";
-
 interface ProductDetailsProps {
-  product: ProductWithTotalPrice;
+  product: Product;
   store: Store;
   category: Category;
 }
@@ -27,16 +26,13 @@ export default function ProductDetails({
   async function handleAddProduct(product: Product) {
     try {
       addProduct(product);
-      toast("Produto adicionado ao carrinho!", {
-        description: format(new Date(), " dd 'de' MMMM 'ás' HH':'mm '.'", {
-          locale: ptBR,
-        }),
-      });
+      toast.success("Produto adicionado ao carrinho!");
     } catch (error) {
       toast.error("Ocorreu um erro ao adicionar o produto ao carrinho!");
       throw new Error();
     }
   }
+
   return (
     <div className="lg:grid lg:grid-cols-2 lg:mt-5">
       <div className="w-full bg-neutral-900 h-[300px] lg:h-full flex justify-center relative">
@@ -76,15 +72,24 @@ export default function ProductDetails({
         </div>
         <div className="flex flex-row gap-4 items-center py-2">
           <h2 className="text-2xl font-bold">
-            R$ {product.totalPrice.toFixed(2)}
+            {getTotalPrice(
+              Number(product.basePrice) *
+                (1 - Number(product.discountPercentage) / 100)
+            )}
           </h2>
+
           <span className="text-[#c4c4c4] line-through">
-            R$ {Number(product.basePrice).toFixed(2)}
+            {getTotalPrice(Number(product.basePrice))}
           </span>
         </div>
 
         <span className="text-[#A1A1AA]">
-          Em 12x s/juros de R$ {(product.totalPrice / 12).toFixed(2)}
+          Em 12x s/juros de R${" "}
+          {getTotalPrice(
+            (Number(product.basePrice) *
+              (1 - product.discountPercentage / 100)) /
+              12
+          )}
         </span>
 
         <Button
