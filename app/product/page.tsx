@@ -1,7 +1,8 @@
-import ProductCard from "../_components/product-card";
+import Image from "next/image";
 import { db } from "../_lib/prisma";
-import { getTotalPrice } from "../_helpers/product-price";
+
 import Search from "../_components/search";
+import ProductCard from "../_components/product-card";
 
 interface ProductsPageProps {
   searchParams: {
@@ -21,25 +22,33 @@ export default async function Products({ searchParams }: ProductsPageProps) {
 
   return (
     <div className="flex flex-col items-center justify-center px-5">
-      <div className="w-full px-5 py-6">
+      <div className="w-full lg:py-6 lg:hidden">
         <Search />
-        <h1 className="text-md pt-4 text-center">
-          Resultados para {searchParams.search}
-        </h1>
       </div>
+      <h1 className="text-md font-bold py-9">
+        Resultados para: {`"${searchParams.search}"`}
+      </h1>
       {products.length > 0 ? (
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-6 lg:grid-cols-3">
           {products.map((product) => (
-            <div className="max-w-[180px] min-w-[180px]" key={product.id}>
+            <div className="max-w-[200px] min-w-[200px]" key={product.id}>
               <ProductCard product={product} />
             </div>
           ))}
         </div>
       ) : (
-        <div>
-          <h1 className="text-xl">
+        <div className="flex flex-col items-center gap-6">
+          <h1 className="text-lg">
             Não foi encontrado nenhum produto com o nome {searchParams.search}
           </h1>
+
+          <Image
+            src="/no-results.png"
+            width={250}
+            height={250}
+            quality={100}
+            alt={`Sem resultados para ${searchParams.search}`}
+          />
         </div>
       )}
     </div>

@@ -14,7 +14,7 @@ interface ProductCardProps {
 export default function ProductCard({ product }: ProductCardProps) {
   return (
     <Link href={`/product/${product.slug}/${product.id}`}>
-      <Card className="w-full">
+      <Card className="h-full">
         <CardContent className="px-2 py-2 pb-4">
           <div className="flex flex-col gap-1">
             <div className="relative flex bg-zinc-900 w-full h-[135px] rounded-md justify-center items-center">
