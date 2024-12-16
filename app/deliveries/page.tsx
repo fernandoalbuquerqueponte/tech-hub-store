@@ -6,6 +6,10 @@ import { db } from "../_lib/prisma";
 import { authOptions } from "../_lib/auth";
 
 import DeliveryItem from "./_components/order-product";
+import { Button } from "../_components/ui/button";
+
+import Image from "next/image";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Meus produtos",
@@ -60,7 +64,7 @@ export default async function OrdersPage() {
         </div>
       )}
 
-      {receivedProducts.length > 0 && (
+      {receivedProducts.length > 0 ? (
         <div className="flex flex-col gap-5 px-5 py-6">
           <h1 className="px-5 text-xl font-bold">PEDIDOS ENTREGUES</h1>
           {receivedProducts.map((deliverie) => (
@@ -71,6 +75,23 @@ export default async function OrdersPage() {
               />
             </div>
           ))}
+        </div>
+      ) : (
+        <div className="w-full flex flex-col items-center justify-center py-9">
+          <h1 className="px-5 text-xl font-bold">Nenhum produto encontrado.</h1>
+          <p className="px-5 text-sm">Você não possui nenhum produto salvo.</p>
+
+          <Image
+            src="/no-products.png"
+            width={250}
+            height={250}
+            quality={100}
+            alt="Nenhum produto encontrado."
+          />
+
+          <Link href="/">
+            <Button>Procurar produtos</Button>
+          </Link>
         </div>
       )}
     </div>
