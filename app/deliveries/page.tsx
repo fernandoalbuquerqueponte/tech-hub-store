@@ -1,10 +1,17 @@
-import { db } from "../_lib/prisma";
+import { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { getServerSession } from "next-auth";
+
+import { db } from "../_lib/prisma";
 import { authOptions } from "../_lib/auth";
+
 import DeliveryItem from "./_components/order-product";
 
-export default async function Orders() {
+export const metadata: Metadata = {
+  title: "Meus produtos",
+};
+
+export default async function OrdersPage() {
   const session = await getServerSession(authOptions);
 
   if (!session?.user) {

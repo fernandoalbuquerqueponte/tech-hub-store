@@ -1,10 +1,15 @@
-import getProducts from "../_data/get-product";
+import { Metadata } from "next";
 import Link from "next/link";
+import getProducts from "../_data/get-product";
 
 import SectionListTitle from "../_components/section-list";
 import ProductList from "../_components/product-list";
 import Search from "../_components/search";
 import Banner from "./_components/banner";
+
+export const metadata: Metadata = {
+  title: "Home",
+};
 
 export default async function Home() {
   const {

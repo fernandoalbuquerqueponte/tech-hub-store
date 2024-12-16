@@ -1,13 +1,21 @@
 import { redirect } from "next/navigation";
-import ProductDetails from "./_components/product-details";
-import { getTotalPrice } from "@/app/_helpers/product-price";
+import { Metadata } from "next";
+
 import getProducts from "@/app/_data/get-product";
+
 import SectionListTitle from "@/app/_components/section-list";
+import ProductDetails from "./_components/product-details";
 import ProductList from "@/app/_components/product-list";
 
 interface ProductDetailsProps {
   params: {
     slug: string;
+  };
+}
+
+export async function generateMetadata({ params }: ProductDetailsProps) {
+  return {
+    title: params.slug,
   };
 }
 
