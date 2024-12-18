@@ -22,7 +22,7 @@ export default async function Products({ searchParams }: ProductsPageProps) {
 
   return (
     <div className="flex flex-col items-center justify-center px-5">
-      <div className="w-full lg:py-6 lg:hidden">
+      <div className="w-full py-6 lg:py-6 lg:hidden">
         <Search />
       </div>
       <h1 className="text-md font-bold py-9">

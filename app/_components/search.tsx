@@ -28,6 +28,7 @@ export default function Search() {
 
   function handleSubmit(data: z.infer<typeof FormSchema>) {
     router.push(`/product?search=${data.search}`);
+    form.reset();
   }
   return (
     <div className="flex items-center">
