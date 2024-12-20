@@ -6,8 +6,6 @@ import { PackageIcon, ShoppingCartIcon, StarIcon } from "lucide-react";
 
 import { getTotalPrice } from "@/app/_helpers/product-price";
 import { CartContext } from "@/app/_providers/cart-provider";
-import { format } from "date-fns/format";
-import { ptBR } from "date-fns/locale";
 
 import { Button } from "@/app/_components/ui/button";
 import { Badge } from "@/app/_components/ui/badge";
@@ -34,9 +32,9 @@ export default function ProductDetails({
   }
 
   return (
-    <div className="lg:grid lg:grid-cols-2 lg:mt-5">
+    <div className="lg:grid lg:gap-5 lg:grid-cols-2 lg:mt-6">
       <div className="w-full bg-neutral-900 h-[300px] lg:h-full flex justify-center relative">
-        <Badge className="absolute top-3 right-5 text-lg px-4 bg-primary/30">
+        <Badge className="absolute top-3 right-5 text-md px-4 bg-primary/20">
           {product.discountPercentage} %
         </Badge>
         <Image
@@ -51,26 +49,25 @@ export default function ProductDetails({
         />
       </div>
 
-      <div className="px-5 space-y-4">
-        <h1 className="text-2xl font-medium w-full">{product.name}</h1>
-
+      <div className="lg:space-y-3 py-6 lg:py-0 px-4 lg:px-0">
         <div className="flex flex-col gap-1">
+          <h1 className="text-2xl font-bold">{product.name}</h1>
           <span className="text-[#A1A1AA]">
             Vendido e entregue por {store.name}
           </span>
-          <div className="flex flex-row gap-3">
-            <StarIcon color="#7c3aed" size={20} />
+          <div className="flex flex-row gap-3 items-center">
+            <StarIcon color="#7c3aed" size={18} />
             <span className="font-bold text-[#A1A1AA]">
               5.0{" "}
               <span className="font-normal">(47 avaliações) 255 Vendidos</span>
             </span>
           </div>
           <div className="flex flex-row gap-3 items-center">
-            <PackageIcon size={20} color="#7c3aed" />
+            <PackageIcon size={18} color="#7c3aed" />
             <span className="text-[#A1A1AA]">Frete Grátis</span>
           </div>
         </div>
-        <div className="flex flex-row gap-4 items-center py-2">
+        <div className="flex flex-row gap-5 items-center mt-2">
           <h2 className="text-2xl font-bold">
             {getTotalPrice(
               Number(product.basePrice) *
@@ -82,7 +79,6 @@ export default function ProductDetails({
             {getTotalPrice(Number(product.basePrice))}
           </span>
         </div>
-
         <span className="text-[#A1A1AA]">
           Em 12x s/juros de R${" "}
           {getTotalPrice(
@@ -93,16 +89,19 @@ export default function ProductDetails({
         </span>
 
         <Button
-          className="w-full "
-          variant="default"
+          className="w-full my-4 lg:my-0"
           onClick={() => handleAddProduct(product)}
         >
           <ShoppingCartIcon size={20} className="mr-2" />
-          Comprar Agora
+          Adicionar ao Carrinho
         </Button>
 
-        <h3 className="text-2xl py-3">Descrição</h3>
-        <p className="text-[#A1A1AA] break-all">{product.description}</p>
+        <div className="flex flex-col gap-5 mt-5">
+          <h3 className="text-2xl font-bold">Descrição</h3>
+          <p className="text-[#A1A1AA] text-sm break-all">
+            {product.description}
+          </p>
+        </div>
       </div>
     </div>
   );
