@@ -25,13 +25,13 @@ export default async function Products({ searchParams }: ProductsPageProps) {
       <div className="w-full py-6 lg:py-6 lg:hidden">
         <Search />
       </div>
-      <h1 className="text-md font-bold py-9">
+      <h1 className="text-lg font-bold py-9">
         Resultados para: {`"${searchParams.search}"`}
       </h1>
       {products.length > 0 ? (
         <div className="grid grid-cols-2 gap-6 lg:grid-cols-3">
           {products.map((product) => (
-            <div className="max-w-[200px] min-w-[200px]" key={product.id}>
+            <div className="max-w-[250px] min-w-[250px]" key={product.id}>
               <ProductCard product={product} />
             </div>
           ))}
