@@ -1,16 +1,14 @@
 "use client";
+import { useState } from "react";
+import Link from "next/link";
 import { MenuIcon, ShoppingCartIcon } from "lucide-react";
 
 import { Sheet, SheetContent, SheetTrigger } from "../_components/ui/sheet";
 import { Card, CardContent } from "./ui/card";
-import { Button } from "./ui/button";
-
-import Link from "next/link";
-
-import MenuContent from "./menu-content";
 import CartMenuContent from "./cart-menu";
+import MenuContent from "./menu-content";
+import { Button } from "./ui/button";
 import Search from "./search";
-import { useState } from "react";
 
 export default function Header() {
   const [sheetOpen, setSheetOpen] = useState(false);
@@ -25,7 +23,7 @@ export default function Header() {
         <CardContent className="flex p-5 h-24 items-center flex-row justify-between gap-7">
           <div className="flex items-center gap-5">
             <Link className="text-lg font-bold" href="/">
-              TechHub
+              PC Station
             </Link>
 
             <div className="w-[500px] hidden lg:block">
