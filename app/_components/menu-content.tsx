@@ -9,7 +9,7 @@ import {
 } from "lucide-react";
 
 import { SheetHeader, SheetTitle } from "../_components/ui/sheet";
-import { Avatar, AvatarFallback, AvatarImage } from "../_components/ui/avatar";
+import { Avatar, AvatarImage } from "../_components/ui/avatar";
 import { Button } from "./ui/button";
 import {
   AlertDialog,

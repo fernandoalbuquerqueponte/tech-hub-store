@@ -7,7 +7,6 @@ import {
   ChevronLeftIcon,
   ChevronRightIcon,
   Loader2,
-  ShoppingCartIcon,
   Trash2Icon,
 } from "lucide-react";
 
@@ -111,10 +110,13 @@ export default function CartItem() {
               <h1 className="font-bold">{product.name}</h1>
               <div className="flex flex-row items-center gap-3">
                 <h2 className="font-medium text-md">
-                  {getTotalPrice(Number(total))}
+                  {getTotalPrice(
+                    Number(product.basePrice) *
+                      (1 - product.discountPercentage / 100)
+                  )}
                 </h2>
                 <h4 className="font-medium text-sm line-through text-neutral-400">
-                  {getTotalPrice(Number(subtotal))}
+                  {getTotalPrice(Number(product.basePrice))}
                 </h4>
               </div>
             </div>
