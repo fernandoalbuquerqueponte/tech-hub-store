@@ -14,8 +14,8 @@ export interface CartProviderProps {
   subtotal: number;
   total: number;
   addProduct: (product: Product) => void;
-  incrementProduct: (productId: string) => void;
-  decrementProduct: (productId: string) => void;
+  increaseCartQuantity: (productId: string) => void;
+  decreaseCartQuantity: (productId: string) => void;
   removeProduct: (productId: string) => void;
 }
 export const CartContext = createContext<CartProviderProps>({
@@ -26,15 +26,14 @@ export const CartContext = createContext<CartProviderProps>({
   discount: 0,
   total: 0,
   addProduct: () => {},
-  incrementProduct: () => {},
-  decrementProduct: () => {},
+  increaseCartQuantity: () => {},
+  decreaseCartQuantity: () => {},
   removeProduct: () => {},
 });
 
 export default function CartProvider({ children }: { children: ReactNode }) {
   const [products, setProducts] = useState<CartContextProps[]>([]);
 
-  //subtotal
   const subtotal = useMemo(() => {
     return products.reduce((acc, product) => {
       return acc + Number(product.basePrice) * product.quantity;
@@ -84,7 +83,7 @@ export default function CartProvider({ children }: { children: ReactNode }) {
     });
   }
 
-  function incrementProduct(productId: string) {
+  function increaseCartQuantity(productId: string) {
     setProducts((prevItem) =>
       prevItem.map((p) => {
         if (p.id === productId) {
@@ -98,7 +97,7 @@ export default function CartProvider({ children }: { children: ReactNode }) {
     );
   }
 
-  function decrementProduct(productId: string) {
+  function decreaseCartQuantity(productId: string) {
     setProducts((prevItem) => {
       const newProductQuantity = prevItem
         .map((p) => {
@@ -147,8 +146,8 @@ export default function CartProvider({ children }: { children: ReactNode }) {
         cartBasePrice: 0,
         discount,
         addProduct,
-        incrementProduct,
-        decrementProduct,
+        increaseCartQuantity,
+        decreaseCartQuantity,
         removeProduct,
         subtotal,
         total,

@@ -36,8 +36,8 @@ export default function CartItem() {
   const [loading, setLoading] = useState(false);
   const {
     products,
-    incrementProduct,
-    decrementProduct,
+    increaseCartQuantity,
+    decreaseCartQuantity,
     removeProduct,
     subtotal,
     total,
@@ -47,11 +47,11 @@ export default function CartItem() {
   const { data } = useSession();
 
   function handleIncrement(productId: string) {
-    incrementProduct(productId);
+    increaseCartQuantity(productId);
   }
 
   function handleDecrement(productId: string) {
-    decrementProduct(productId);
+    decreaseCartQuantity(productId);
   }
 
   async function handleRemoveProduct(productId: string) {
