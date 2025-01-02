@@ -46,11 +46,11 @@ export default function CartItem() {
 
   const { data } = useSession();
 
-  function handleIncrement(productId: string) {
+  function handleIncreaseCartQuantity(productId: string) {
     increaseCartQuantity(productId);
   }
 
-  function handleDecrement(productId: string) {
+  function handleDecreaseCartQuantity(productId: string) {
     decreaseCartQuantity(productId);
   }
 
@@ -125,7 +125,8 @@ export default function CartItem() {
                 <Button
                   variant="outline"
                   size="icon"
-                  onClick={() => handleDecrement(product.id)}
+                  disabled={product.quantity === 1}
+                  onClick={() => handleDecreaseCartQuantity(product.id)}
                 >
                   <ChevronLeftIcon size={18} />
                 </Button>
@@ -137,7 +138,7 @@ export default function CartItem() {
                 <Button
                   variant="outline"
                   size="icon"
-                  onClick={() => handleIncrement(product.id)}
+                  onClick={() => handleIncreaseCartQuantity(product.id)}
                 >
                   <ChevronRightIcon size={18} />
                 </Button>
